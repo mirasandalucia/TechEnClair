@@ -1,0 +1,17 @@
+﻿# Home Assistant / repo
+secrets.yaml
+*.db
+home-assistant_v2.db*
+.storage/
+__pycache__/
+*.log
+*.bak
+*.pyc
+*.sqlite
+*.db-shm
+*.db-wal
+# macOS
+.DS_Store
+# node/hacs caches
+node_modules/
+www/community/

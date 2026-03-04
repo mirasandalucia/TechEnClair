@@ -1,0 +1,20 @@
+﻿title: Énergie
+views:
+  - title: Suivi Énergie
+    path: energie
+    theme: TechEnClair
+    cards:
+      - type: energy-distribution
+      - type: energy-solar-consumption
+      - type: statistics-graph
+        entities:
+          - sensor.energy_today_kwh
+          - sensor.energy_yesterday_kwh
+        days_to_show: 14
+        stat_types: [sum]
+      - type: entities
+        title: Production
+        entities:
+          - sensor.solar_power_now
+          - sensor.grid_power_now
+          - sensor.battery_soc
