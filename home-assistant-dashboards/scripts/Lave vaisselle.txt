@@ -1,0 +1,194 @@
+mushroom-template-card (hacs)
+HACS → Frontend → Rechercher Mushroom
+HACS → Frontend → Rechercher Card Mod
+--------------------------------------
+
+Code dashbord :
+
+-------------------------------------------
+
+type: conditional
+conditions:
+  - condition: numeric_state
+    entity: sensor.prise_2_puissance
+    above: 10
+card:
+  type: custom:mushroom-template-card
+  primary: Lave-vaisselle
+  secondary: CYCLE EN COURS...
+  icon: mdi:dishwasher
+  icon_color: blue
+  card_mod:
+    style: |
+      ha-card {
+        background: rgba(0, 122, 255, 0.05) !important;
+        border-radius: 20px !important;
+        /* Animation du contour bleu */
+        animation: border-pulse-blue 2s infinite;
+      }
+
+      @keyframes border-pulse-blue {
+        0% {
+          border: 2px solid rgba(0, 122, 255, 0.4);
+          box-shadow: 0 0 0px rgba(0, 122, 255, 0);
+        }
+        50% {
+          border: 2px solid rgba(0, 122, 255, 1);
+          box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
+        }
+        100% {
+          border: 2px solid rgba(0, 122, 255, 0.4);
+          box-shadow: 0 0 0px rgba(0, 122, 255, 0);
+        }
+      }
+
+      /* L'icône du lave-vaisselle continue de tourner */
+      .mushroom-shape-icon {
+        animation: spin 3s linear infinite;
+      }
+      @keyframes spin {
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Le texte clignote en bleu */
+      .secondary {
+        color: #007aff !important;
+        font-weight: 900;
+        animation: blink 2s linear infinite;
+      }
+      @keyframes blink {
+        50% { opacity: 0.3; }
+      }
+
+
+-----------------------------------------------------------------------------
+
+AUTOMATISATION : cycle départ + notif
+
+Départ du lave vaisselle :
+
+alias: "Lave-vaisselle : Notification de départ"
+description: Alerte quand le cycle de lavage commence réellement
+triggers:
+  - trigger: numeric_state
+    entity_id: sensor.prise_2_puissance
+    above: 10
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+conditions:
+  - condition: state
+    entity_id: switch.prise_2
+    state: "on"
+  - condition: template
+    value_template: >-
+      {{ (as_timestamp(now()) -
+      as_timestamp(state_attr('automation.lave_vaisselle_notification_de_depart',
+      'last_triggered') | default(0))) > 10800 }}
+actions:
+  - action: notify.mobile_app_sm_s921b
+    data:
+      title: Lave-vaisselle
+      message: Le cycle a commencé. Fin prévue dans environ 1h30.
+  - action: notify.mobile_app_sm_julie
+    data:
+      title: Lave-vaisselle
+      message: Le cycle a commencé.
+mode: single
+
+
+----------------------------------------------------------------------------------------
+
+Automatisation cycle terminer + notif + extinction de la prise automatiquement :
+
+alias: "Lave-vaisselle : Extinction automatique"
+description: Coupe la prise après 10 minutes de consommation basse et affiche l'alerte
+triggers:
+  - trigger: numeric_state
+    entity_id:
+      - sensor.prise_2_puissance
+    below: 2
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+conditions:
+  - condition: state
+    entity_id: switch.prise_2
+    state: "on"
+actions:
+  - action: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.alerte_lave_vaisselle_termine
+  - action: switch.turn_off
+    target:
+      entity_id: switch.prise_2
+  - action: notify.mobile_app_sm_s921b
+    data:
+      title: 🧼 Lave-vaisselle
+      message: Cycle terminé ! La prise a été coupée pour économiser l'énergie.
+  - action: notify.mobile_app_sm_julie
+    data:
+      message: Cycle terminé ! La prise a été coupée pour économiser l'énergie.
+mode: single
+
+
+---------------------------------------------------------
+
+Si ERROR pour le 3eme script input_boolean.alerte_lave_vaisselle_termine :
+
+
+1. Création du bouton virtuel (l'Entrée)
+C'est ici qu'on crée la "mémoire" qui restera sur ON ou OFF.
+
+Va dans Paramètres > Appareils et services.
+
+Clique sur l'onglet Entrées (en haut au milieu).
+
+Clique sur le bouton + CRÉER UNE ENTRÉE en bas à droite.
+
+Choisis Interrupteur (ou Input boolean en anglais).
+
+Configure-le ainsi :
+
+Nom : Alerte Lave-vaisselle Terminé
+
+Icône : mdi:dishwasher (optionnel, mais plus joli).
+
+
+-----------------------------------------------------------------
+
+Voici le 4eme script pour afficher quand le lave vaisselle et terminer sur le dashbord :
+
+type: conditional
+conditions:
+  - condition: state
+    entity: input_boolean.alerte_lave_vaisselle_termine
+    state: "on"
+card:
+  type: custom:mushroom-template-card
+  primary: Lave-vaisselle
+  secondary: "TERMINÉ : Cliquer pour éteindre"
+  icon: mdi:check-circle-outline
+  icon_color: green
+  tap_action:
+    action: perform-action
+    perform_action: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.alerte_lave_vaisselle_termine
+  card_mod:
+    style: |
+      ha-card {
+        background: rgba(0, 255, 0, 0.1) !important;
+        border-radius: 20px !important;
+        border: 2px solid green !important;
+        animation: finish-alert 1.5s infinite;
+      }
+      @keyframes finish-alert {
+        0% { box-shadow: 0 0 0px 0px rgba(0, 255, 0, 0.5); }
+        50% { box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.3); }
+        100% { box-shadow: 0 0 0px 0px rgba(0, 255, 0, 0.5); }
+      } 
+
+

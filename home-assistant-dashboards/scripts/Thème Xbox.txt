@@ -1,0 +1,80 @@
+type: conditional
+conditions:
+  - entity: media_player.xbox_de_la_chambre
+    state_not: "off"
+  - entity: media_player.xbox_de_la_chambre
+    state_not: standby
+  - entity: media_player.xbox_de_la_chambre
+    state_not: unavailable
+  - entity: media_player.xbox_de_la_chambre
+    state_not: unknown
+card:
+  type: custom:stack-in-card
+  card_mod:
+    style: |
+      ha-card {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0px !important;
+      }
+  cards:
+    - type: custom:mushroom-template-card
+      primary: >
+        {% set jeu = states('sensor.nathan455614_now_playing') %} Xbox Series S
+        : {{ jeu if jeu not in ['unknown', 'unavailable', 'None'] else "Accueil"
+        }}
+      secondary: |
+        {% if is_state('media_player.xbox_de_la_chambre', 'playing') %}
+          En cours de jeu
+        {% else %}
+          En ligne
+        {% endif %}
+      icon: mdi:microsoft-xbox
+      icon_color: "#107C10"
+      picture: "{{ state_attr('image.nathan455614_now_playing', 'entity_picture') }}"
+      card_mod:
+        style: |
+          ha-card {
+            background: {% if state_attr('image.nathan455614_now_playing', 'entity_picture') %}
+              linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ state_attr("image.nathan455614_now_playing", "entity_picture") }}')
+            {% else %}
+              rgba(16, 124, 16, 0.1)
+            {% endif %} !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border-radius: 12px !important;
+            border: none !important;
+            height: 100px !important;
+          }
+          .primary { 
+            color: white !important; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+          }
+          .secondary { 
+            color: #107C10 !important; 
+            font-weight: bold !important; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+          }
+    - type: custom:mushroom-chips-card
+      chips:
+        - type: template
+          icon: mdi:power
+          icon_color: red
+          tap_action:
+            action: call-service
+            service: media_player.turn_off
+            target:
+              entity_id: media_player.xbox_de_la_chambre
+      card_mod:
+        style: |
+          ha-card {
+            position: absolute !important;
+            top: 10px;
+            right: 10px;
+            background: none !important;
+          }
+          mushroom-chip {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border-radius: 50% !important;
+          }

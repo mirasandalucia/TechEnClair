@@ -1,0 +1,183 @@
+Dernière MAJ météo avec les bouton en dessous :
+
+Avoir la carte Clock Weather Card
+
+----------------------------------------------------------------------
+
+type: vertical-stack
+cards:
+  - type: custom:clock-weather-card
+    entity: weather.forecast_amilly
+    title: Amilly
+    hide_today_section: false
+    hide_forecast_section: false
+    animated_icon: true
+    forecast_days: 5
+    locale: fr
+    time_format: 24
+    date_pattern: EEEE d MMMM
+    time_pattern: HH:mm
+    card_mod:
+      style: |
+        ha-card {
+          background: linear-gradient(135deg, #1f2937, #4b5563) !important;
+          border-radius: 15px 15px 0px 0px !important;
+          border: none !important;
+          margin-bottom: 4px !important;
+          color: #f9fafb !important;
+          overflow: hidden;
+          position: relative;
+        }
+        ha-card::after {
+          content: "☁️";
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          font-size: 7rem;
+          opacity: 0.08;
+          pointer-events: none;
+          transform: rotate(-10deg);
+          filter: grayscale(1) brightness(1.5);
+        }
+  - type: grid
+    columns: 4
+    square: false
+    cards:
+      - type: button
+        entity: alarm_control_panel.home_base_2
+        icon: mdi:shield-lock
+        show_name: false
+        card_mod:
+          style: |
+            ha-card {
+              background: #374151 !important;
+              border-radius: 4px !important;
+              border: none !important;
+              color: {% if is_state('alarm_control_panel.home_base_2', 'disarmed') %} #98ae85 {% else %} #f44336 {% endif %} !important;
+            }
+      - type: button
+        icon: mdi:map-marker-radius
+        show_name: false
+        tap_action:
+          action: fire-dom-event
+          browser_mod:
+            service: browser_mod.popup
+            data:
+              title: Positions Famille
+              content:
+                type: map
+                entities:
+                  - person.julie
+                  - person.miras
+                  - person.esteban
+                  - person.nathan
+        card_mod:
+          style: |
+            ha-card {
+              background: #374151 !important;
+              border-radius: 4px !important;
+              border: none !important;
+              color: #f9fafb !important;
+            }
+      - type: button
+        icon: mdi:cctv
+        show_name: false
+        tap_action:
+          action: call-service
+          service: script.regarder_camera_arriere_cour
+        double_tap_action:
+          action: more-info
+          entity: camera.192_168_1_160_3
+        hold_action:
+          action: more-info
+          entity: camera.192_168_1_160_3
+        card_mod:
+          style: |
+            ha-card {
+              background: #374151 !important;
+              border-radius: 4px !important;
+              border: none !important;
+              color: #f9fafb !important;
+            }
+      - type: button
+        entity: switch.arriere_cour_rtsp_stream
+        icon: mdi:video-input-antenna
+        show_name: false
+        card_mod:
+          style: |
+            ha-card {
+              background: #374151 !important;
+              border-radius: 4px !important;
+              border: none !important;
+              color: {% if is_state('switch.arriere_cour_rtsp_stream', 'on') %} #fdd835 {% else %} #f9fafb {% endif %} !important;
+            }
+  - type: button
+    entity: switch.simulation
+    name: Simulation présence
+    show_state: true
+    icon: mdi:home-lightning-bolt
+    card_mod:
+      style: |
+        ha-card {
+          background: #374151 !important;
+          border-radius: 0px 0px 15px 15px !important;
+          border: none !important;
+          margin-top: -2px !important;
+          height: 60px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          position: relative !important;
+          overflow: hidden !important;
+          transition: all 0.3s ease-in-out !important;
+          {% if is_state('switch.simulation', 'on') %}
+          box-shadow: inset 0 0 10px #fdd835, 0 0 15px rgba(253, 216, 53, 0.4) !important;
+          border: 1px solid rgba(253, 216, 53, 0.5) !important;
+          {% endif %}
+        }
+        ha-card > :first-child {
+          flex-direction: row !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 100% !important;
+          z-index: 2 !important;
+        }
+        ha-state-icon {
+          margin: 0 10px 0 0 !important;
+          --mdc-icon-size: 24px;
+          color: {% if is_state('switch.simulation', 'on') %} #fdd835 {% else %} #f9fafb {% endif %} !important;
+        }
+        .name {
+          font-size: 14px !important;
+          color: #f9fafb !important;
+          margin-right: 5px !important;
+        }
+        .state {
+          font-size: 14px !important;
+          color: #94a3b8 !important;
+        }
+        /* Image fantôme ALARME (Gauche) */
+        ha-card::before {
+          content: "🛡️";
+          position: absolute;
+          left: 10px;
+          bottom: -15px;
+          font-size: 4.5rem;
+          opacity: 0.04;
+          pointer-events: none;
+          transform: rotate(-15deg);
+          z-index: 1;
+        }
+        /* Image fantôme MAISON (Droite) */
+        ha-card::after {
+          content: "🏠";
+          position: absolute;
+          right: 15px;
+          bottom: -15px;
+          font-size: 5rem;
+          opacity: 0.05;
+          pointer-events: none;
+          transform: rotate(10deg);
+          z-index: 1;
+        }

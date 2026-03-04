@@ -1,0 +1,146 @@
+HACS : Multiscrape + Browser Mod
+
+
+Dashbord : 1er version sans popup
+
+--------------------------------------------------------------------------------
+
+type: markdown
+content: >
+  **🍿 Sorties de la semaine :**
+
+  {% for i in range(1, 11) -%}
+    {% set f = states('sensor.film_' ~ i) -%}
+    {% if f not in ['unknown', 'unavailable', 'none', 'Indisponible'] -%}
+      - {{ f }}<br>
+    {%- endif %}
+  {%- endfor %}
+card_mod:
+  style: |
+    ha-card {
+      width: 100%;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #1f2937, #4b5563);
+      color: #f9fafb !important;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      padding: 15px !important;
+    }
+    .card-content {
+      color: #f9fafb !important;
+      line-height: 1.3 !important;
+    }
+
+-----------------------------------------------------------------------
+
+Code dans à ajouter configuration Yaml :
+
+multiscrape:
+  - name: Sorties Cinema
+    resource: https://www.allocine.fr/film/sorties-semaine/
+    scan_interval: 21600 # Vérification toutes les 6h
+    sensor:
+      - unique_id: film_1
+        name: "Film 1"
+        select: "li.mdl:nth-child(1) h2 a"
+      - unique_id: film_2
+        name: "Film 2"
+        select: "li.mdl:nth-child(2) h2 a"
+      - unique_id: film_3
+        name: "Film 3"
+        select: "li.mdl:nth-child(3) h2 a"
+      - unique_id: film_4
+        name: "Film 4"
+        select: "li.mdl:nth-child(4) h2 a"
+      - unique_id: film_5
+        name: "Film 5"
+        select: "li.mdl:nth-child(5) h2 a"
+      - unique_id: film_6
+        name: "Film 6"
+        select: "li.mdl:nth-child(6) h2 a"
+      - unique_id: film_7
+        name: "Film 7"
+        select: "li.mdl:nth-child(7) h2 a"
+      - unique_id: film_8
+        name: "Film 8"
+        select: "li.mdl:nth-child(8) h2 a"
+      - unique_id: film_9
+        name: "Film 9"
+        select: "li.mdl:nth-child(9) h2 a"
+      - unique_id: film_10
+        name: "Film 10"
+        select: "li.mdl:nth-child(10) h2 a"
+
+-------------------------------------------------
+
+Dashbord Version 2 avec POPUP :
+
+type: custom:button-card
+name: 🍿 Sorties Cinéma
+aspect_ratio: 3/1
+styles:
+  card:
+    - border-radius: 12px
+    - background: "linear-gradient(135deg, #1f2937, #4b5563)"
+    - color: "#f9fafb"
+    - padding: 2px
+  grid:
+    - grid-template-areas: "\"left_hand n right_hand\""
+    - grid-template-columns: 1fr auto 1fr
+  name:
+    - font-size: 14px
+    - font-weight: bold
+  custom_fields:
+    left_hand:
+      - justify-self: end
+      - font-size: 16px
+      - position: relative
+    right_hand:
+      - justify-self: start
+      - font-size: 16px
+      - position: relative
+custom_fields:
+  left_hand: >
+    <span style="animation: click-me 1s infinite; display:
+    inline-block;">👆</span>
+
+    <div style="position: absolute; top: -2px; left: 2px; width: 12px;
+    height: 12px; border: 2px solid #00d4ff; border-radius: 50%; animation:
+    ripple 1s infinite;"></div>
+  right_hand: >
+    <span style="animation: click-me 1s infinite; display:
+    inline-block;">👆</span>
+
+    <div style="position: absolute; top: -2px; left: 2px; width: 12px;
+    height: 12px; border: 2px solid #00d4ff; border-radius: 50%; animation:
+    ripple 1s infinite;"></div>
+extra_styles: >
+  @keyframes click-me { 0%, 100% { transform: translateY(0); } 50% {
+  transform: translateY(2px); } }
+
+  @keyframes ripple { 0% { transform: scale(0.5); opacity: 1; } 100% {
+  transform: scale(2); opacity: 0; } }
+tap_action:
+  action: fire-dom-event
+  browser_mod:
+    service: browser_mod.popup
+    data:
+      title: 🍿 Films au Cinéma
+      content:
+        type: markdown
+        content: |
+          <div style="padding: 10px;">
+          {% for i in range(1, 11) -%}
+            {% set f = states('sensor.film_' ~ i) -%}
+            {% if f not in ['unknown', 'unavailable', 'none', 'Indisponible'] -%}
+              <div style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                - {{ f }}
+              </div>
+            {%- endif %}
+          {%- endfor %}
+          </div>
+
+----------------------------------------------
+
+REDEMARER HOME ASSISTANT

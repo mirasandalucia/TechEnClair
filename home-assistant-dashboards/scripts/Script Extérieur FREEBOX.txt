@@ -1,0 +1,12 @@
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.1.254
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+
+
+Application dans module : Let's Encrypt
+
+Voir tuto sur TIKTOK

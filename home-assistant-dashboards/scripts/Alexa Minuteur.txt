@@ -1,0 +1,99 @@
+Voir vidéo TIKTOK :
+
+Script du dashbord :
+
+
+--------------------------------------------------------------------------------
+
+type: conditional
+conditions:
+  - entity: sensor.salon_la_prochaine_fois
+    state_not: Inconnu
+  - entity: sensor.salon_la_prochaine_fois
+    state_not: unavailable
+  - entity: sensor.salon_la_prochaine_fois
+    state_not: idle
+  - entity: sensor.salon_la_prochaine_fois
+    state_not: unknown
+card:
+  type: custom:button-card
+  entity: sensor.salon_la_prochaine_fois
+  show_name: false
+  show_state: false
+  styles:
+    card:
+      - background: "linear-gradient(135deg, #1f2937 0%, #4b5563 100%)"
+      - border-radius: 20px
+      - height: 140px
+      - border: none
+      - position: relative
+      - overflow: hidden
+      - display: flex
+      - flex-direction: column
+      - padding: 0px
+    grid:
+      - grid-template-areas: "\"footer\" \"chrono\""
+      - grid-template-rows: 45px 1fr
+    custom_fields:
+      footer:
+        - color: "#FFD700"
+        - font-size: 1.6rem
+        - font-weight: 900
+        - text-transform: uppercase
+        - align-self: center
+        - margin-top: 15px
+        - z-index: 2
+      chrono:
+        - width: 100%
+        - height: 100%
+        - display: flex
+        - align-items: center
+        - justify-content: center
+  custom_fields:
+    footer: |
+      [[[ return `<span>⏳</span> ALEXA MINUTEUR`; ]]]
+    chrono:
+      card:
+        type: tile
+        entity: sensor.salon_la_prochaine_fois
+        card_mod:
+          style: |
+            ha-card {
+              background: none !important;
+              border: none !important;
+              box-shadow: none !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              width: 100% !important;
+            }
+            .icon-container, .info, .display {
+              display: none !important;
+            }
+            .state {
+              font-size: 6.5rem !important; 
+              font-weight: 900 !important;
+              color: white !important;
+              line-height: 1 !important;
+              text-align: center !important;
+              width: 100% !important;
+              margin: 0 !important;
+              position: absolute !important;
+              left: 50% !important;
+              top: 55% !important;
+              transform: translate(-50%, -50%) !important;
+            }
+  extra_styles: |
+    ha-card::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      bottom: -15px;
+      width: 120px;
+      height: 120px;
+      background-color: white;
+      -webkit-mask-image: url("https://api.iconify.design/mdi/timer-sand.svg");
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: contain;
+      opacity: 0.08;
+      pointer-events: none;
+    }

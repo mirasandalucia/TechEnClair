@@ -1,0 +1,176 @@
+Première étape : Installer Liste d'achats (nom : Liste d'achats) & Liste de tâches Local (nom : Ma Liste de Course).
+
+Voici le code a coller dans Script : Remplacer bien vos téléphones et URL de votre serveur.
+
+--------------------------------------------------------------------------------------
+
+alias: Envoi Liste de Courses
+sequence:
+  - action: todo.get_items
+    target:
+      entity_id: todo.liste_dachats
+    response_variable: ma_liste
+  - action: notify.mobile_app_sm_s921b
+    data:
+      title: 🤖 Liste de Courses
+      message: >
+        {% set articles = ma_liste['todo.liste_dachats']['items'] %} {% if
+        articles %}
+          Mickael, voici les articles : {{ articles | map(attribute='summary') | join(', ') }}
+        {% else %}
+          La liste de courses est vide.
+        {% endif %}
+      data:
+        tag: liste_courses_active
+        sticky: true
+        clickAction: https://miras.freeboxos.fr:8123/dashboard-home/course
+        actions:
+          - action: URI
+            title: 🛒 OUVRIR LA LISTE
+            uri: https://miras.freeboxos.fr:8123/dashboard-home/course
+          - action: copy_to_clipboard
+            title: 📋 Garder en mémoire
+  - action: notify.mobile_app_sm_julie
+    data:
+      title: 🤖 Liste de Courses
+      message: >
+        {% set articles = ma_liste['todo.liste_dachats']['items'] %} {% if
+        articles %}
+          Julie, voici les articles : {{ articles | map(attribute='summary') | join(', ') }}
+        {% else %}
+          La liste est vide, Julie.
+        {% endif %}
+      data:
+        tag: liste_courses_active
+        actions:
+          - action: URI
+            title: 🛒 OUVRIR LA LISTE
+            uri: https://miras.freeboxos.fr:8123/dashboard-home/course
+          - action: copy_to_clipboard
+            title: 📋 Garder en mémoire
+mode: single
+
+
+----------------------------------------------------------------------------------------------------
+
+Code pour Automatisation :
+
+alias: Système - Action Clic Copier Liste
+triggers:
+  - event_type: mobile_app_notification_action
+    event_data:
+      action: copy_to_clipboard
+    trigger: event
+actions:
+  - action: todo.get_items
+    target:
+      entity_id: todo.liste_dachats
+    response_variable: liste_actuelle
+  - action: notify.mobile_app_sm_s921b
+    data:
+      title: 🛒 TA LISTE DE COURSES
+      message: >
+        {% set articles = liste_actuelle['todo.liste_dachats']['items'] %} {% if
+        articles %}
+          {{ articles | map(attribute='summary') | join('\n') }}
+        {% else %}
+          Zut, la liste est vraiment vide !
+        {% endif %}
+      data:
+        tag: liste_courses_active
+        persistent: true
+        sticky: true
+        color: "#2196F3"
+        actions:
+          - action: finish_shopping
+            title: ✅ J'AI FINI (EFFACER)
+  - action: notify.mobile_app_sm_julie
+    data:
+      title: 🛒 TA LISTE DE COURSES
+      message: >
+        {% set articles = liste_actuelle['todo.liste_dachats']['items'] %} {% if
+        articles %}
+          {{ articles | map(attribute='summary') | join('\n') }}
+        {% else %}
+          Zut, la liste est vraiment vide !
+        {% endif %}
+      data:
+        tag: liste_courses_active
+        persistent: true
+        sticky: true
+        color: "#2196F3"
+        actions:
+          - action: finish_shopping
+            title: ✅ J'AI FINI (EFFACER)
+
+---------------------------------------------------------------------------------------------------
+
+Code Automatisation pour la localisation ( Faudra crée votre Zone dans les paramètre et modifier le script en conséquence ) :
+
+alias: Courses - Rappel à l'arrivée au magasin
+description: >-
+  Envoie la liste de courses dès que Mickael ou Julie arrive chez Carrefour ou
+  Leclerc
+triggers:
+  - entity_id: device_tracker.sm_s921b
+    zone: zone.carrefour
+    event: enter
+    trigger: zone
+  - entity_id: device_tracker.sm_s921b
+    zone: zone.leclerc
+    event: enter
+    trigger: zone
+  - entity_id: device_tracker.sm_julie
+    zone: zone.carrefour
+    event: enter
+    trigger: zone
+  - entity_id: device_tracker.sm_julie
+    zone: zone.leclerc
+    event: enter
+    trigger: zone
+conditions:
+  - condition: template
+    value_template: "{{ state_attr('todo.liste_dachats', 'items') | count > 0 }}"
+actions:
+  - action: script.envoi_liste_de_courses_aux_telephones
+mode: parallel
+max: 10
+
+
+---------------------------------------------------------------------------------------
+
+Dernier script pour DASHBORD :
+
+type: vertical-stack
+cards:
+  - type: todo-list
+    entity: todo.liste_dachats
+    title: 📋 Liste de Courses
+    card_mod:
+      style: |
+        ha-card {
+          background: linear-gradient(135deg, #1f2937, #4b5563) !important;
+          color: #f9fafb !important;
+          border-radius: 15px 15px 0px 0px !important;
+          font-weight: 600;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          padding: 8px !important;
+          border: none !important;
+        }
+  - type: button
+    name: Envoyer à l'équipage
+    icon: mdi:cellphone-arrow-down
+    tap_action:
+      action: call-service
+      service: script.envoi_liste_de_courses_aux_telephones
+    card_mod:
+      style: |
+        ha-card {
+          background: linear-gradient(135deg, #1f2937, #4b5563) !important;
+          color: #f9fafb !important;
+          border-radius: 0px 0px 15px 15px !important;
+          height: 60px !important;
+          border-top: 1px solid rgba(255,255,255,0.1) !important;
+        }
+ 
+

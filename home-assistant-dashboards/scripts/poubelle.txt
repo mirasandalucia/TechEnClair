@@ -1,0 +1,63 @@
+type: custom:mushroom-template-card
+entity: sensor.poubelle_jaune
+primary: Poubelle Jaune
+secondary: SORTIR CE SOIR
+picture: /api/image/serve/44eb98bd5dedf45d1787d568ec4fa3d8/256x256
+tap_action:
+  action: none
+hold_action:
+  action: none
+double_tap_action:
+  action: none
+card_mod:
+  style: |
+    {# Configuration des dates #}
+    {% set jour_veille = 2 %} {# 2 = Mercredi #}
+    {% set est_semaine_impaire = (now().isocalendar()[1] % 2 != 0) %}
+    {% set est_mercredi = (now().weekday() == jour_veille) %}
+
+    {# Condition d'affichage : Mercredi + Semaine Impaire #}
+    {% set afficher = est_mercredi and est_semaine_impaire %}
+
+    :host {
+      display: {{ 'block' if afficher else 'none' }} !important;
+    }
+
+    ha-card {
+      border-radius: 16px;
+      background-color: rgba(0,0,0,0.4) !important;
+      animation: alert-jaune 2s infinite ease-in-out;
+      border: 2px solid yellow !important;
+    }
+
+    @keyframes alert-jaune {
+      0% { border-color: rgba(255, 255, 0, 0.5); transform: scale(1); }
+      50% { border-color: rgba(255, 255, 0, 1); box-shadow: 0 0 20px 5px rgba(255, 255, 0, 0.4); transform: scale(1.02); }
+      100% { border-color: rgba(255, 255, 0, 0.5); transform: scale(1); }
+    }
+
+    .mushroom-shape-avatar { 
+      border-radius: 0px !important; 
+      background: none !important; 
+    }
+
+    .primary { 
+      color: yellow !important; 
+      font-weight: bold; 
+    }
+
+    .secondary { 
+      color: yellow !important; 
+      font-weight: 900; 
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+
+
+
+Mon code et prévu pour Mercredi soir semaine Impaire ! si ta besoin de changer demande a Gemini au besoin
+

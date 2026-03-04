@@ -1,0 +1,18 @@
+type: markdown
+content: |
+  <center>
+    <ha-icon icon="mdi:dishwasher"></ha-icon> Consommation du mois : Lave-vaisselle
+    <br>
+    {{ (states('sensor.lave_vaisselle_mensuel') | float(0) / 100) | round(2) }} kWh | <span style="color: #4caf50;">{{ ((states('sensor.lave_vaisselle_mensuel') | float(0) / 100) * 0.1296) | round(2) }} €</span>
+  </center>
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      background-color: #20232A;
+      padding: 8px 12px;
+      font-family: 'Roboto', sans-serif;
+      color: #ffffff;
+      line-height: 1.2;
+    }

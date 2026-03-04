@@ -1,0 +1,70 @@
+Voici le script pour le wifi et la batterie dans un avatar :
+
+Il faudra remplacer les sensors par les votres :
+
+
+type: picture-elements
+image: media-source://image_upload/e7a98615a88c526bf2a07f45cf32d56b
+elements:
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.s24_ping
+        state: "on"
+    elements:
+      - type: icon
+        icon: mdi:wifi
+        style:
+          top: 15%
+          left: 92%
+        card_mod:
+          style: |
+            ha-icon {
+              color: #88C0D0 !important;
+              filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.8));
+            }
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.s24_ping
+        state: "off"
+    elements:
+      - type: icon
+        icon: mdi:signal-variant
+        style:
+          top: 15%
+          left: 92%
+        card_mod:
+          style: |
+            ha-icon {
+              color: #88C0D0 !important;
+              filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.8));
+            }
+
+  - type: state-icon
+    entity: sensor.sm_s921b_battery_level
+    style:
+      top: 15%
+      left: 82%
+    card_mod:
+      style: |
+        :host {
+          --paper-item-icon-color: white !important;
+          filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+        }
+
+  - type: state-label
+    entity: sensor.sm_s921b_battery_level
+    style:
+      top: 72%
+      left: 50%
+      font-size: 20px
+      font-weight: bold
+      color: white
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8)
+      background-color: rgba(0,0,0,0.3)
+      padding: 5px 10px
+      border-radius: 10px
+
+grid_options:
+  columns: 6
+  rows: 3

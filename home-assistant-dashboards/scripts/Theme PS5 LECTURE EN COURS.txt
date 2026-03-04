@@ -1,0 +1,45 @@
+type: conditional
+conditions:
+  - entity: media_player.playstation_5
+    state_not: "off"
+  - entity: media_player.playstation_5
+    state_not: unavailable
+  - entity: media_player.playstation_5
+    state_not: standby
+card:
+  type: custom:mushroom-template-card
+  primary: Jeux en cours sur la PlayStation 5
+  secondary: >
+    {% if is_state('media_player.playstation_5', 'playing') or
+    is_state('media_player.playstation_5', 'on') %}
+      {{ state_attr('media_player.playstation_5', 'media_title') }}
+    {% else %}
+      En ligne
+    {% endif %}
+  icon: mdi:sony-playstation
+  icon_color: "#88C0D0"
+  picture: "{{ state_attr('media_player.playstation_5', 'entity_picture') }}"
+  card_mod:
+    style: |
+      ha-card {
+        /* On définit l'image du jeu en arrière-plan avec un effet de fondu */
+        background: {% if state_attr('media_player.playstation_5', 'entity_picture') %}
+          linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ state_attr("media_player.playstation_5", "entity_picture") }}')
+        {% else %}
+          rgba(136, 192, 208, 0.1)
+        {% endif %} !important;
+        background-size: cover !important;
+        background-position: center !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(136, 192, 208, 0.3) !important;
+        transition: all 0.5s ease;
+      }
+      .primary {
+        color: white !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+      }
+      .secondary {
+        color: #88C0D0 !important;
+        font-weight: bold !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+      }

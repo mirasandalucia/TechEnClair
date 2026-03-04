@@ -1,0 +1,97 @@
+via HACS (Home Assistant Community Store) :
+
+Mushroom Cards : Pour le design des cartes.
+Card Mod : Pour permettre les animations (le clignotement et les couleurs).
+
+1er script a mettre dans Automation.yamls
+
+
+- id: '1770305772307'
+  alias: "Système Boîte aux Lettres"
+  description: "Alerte quand le facteur passe"
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.detecterur
+      to: "on"
+  actions:
+    # 1. On force l'interrupteur mémoire sur ON
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.alerte_boite_aux_lettres
+    
+    # 2. Notification Alexa / Smartphone
+    - action: notify.send_message
+      target:
+        device_id: bd4f6a5f7f331dd5da315e8b61dc76c2
+      data:
+        message: "📦 Courrier détecté dans la boîte !"
+
+    # 3. Attente de 8 heures avant remise à zéro
+    - delay: "08:00:00"
+    
+    # 4. On éteint l'alerte
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.alerte_boite_aux_lettres
+
+
+-----------------------------------------------------------------------------------------
+
+Le bouton du dashbord : 
+
+type: conditional
+conditions:
+  - entity: input_boolean.alerte_boite_aux_lettres
+    state: "on"
+card:
+  type: custom:mushroom-template-card
+  entity: input_boolean.alerte_boite_aux_lettres
+  primary: Boîte aux Lettres
+  secondary: LE FACTEUR EST PASSÉ !
+  icon: mdi:mailbox-up-outline
+  icon_color: red
+  tap_action:
+    action: toggle
+  card_mod:
+    style: |
+      ha-card {
+        background: rgba(255, 0, 0, 0.1) !important;
+        border-radius: 20px !important;
+        border: 2px solid red !important;
+        backdrop-filter: blur(10px);
+        animation: mailbox-alert 1.5s infinite;
+      }
+
+      .mushroom-shape-icon {
+        animation: icon-jump 0.8s infinite;
+      }
+
+      @keyframes mailbox-alert {
+        0% { box-shadow: 0 0 0px 0px rgba(255, 0, 0, 0.5); }
+        50% { box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.3); }
+        100% { box-shadow: 0 0 0px 0px rgba(255, 0, 0, 0.5); }
+      }
+
+      @keyframes icon-jump {
+        0%, 100% { transform: translateY(0) scale(1.1); }
+        50% { transform: translateY(-5px) scale(1.2); }
+      }
+
+      .primary {
+        font-weight: bold !important;
+        color: white !important;
+      }
+
+      .secondary {
+        color: red !important;
+        letter-spacing: 1px;
+        font-weight: 900;
+      }
+
+
+-----------------------------------------------------------------------
+
+Ensuite : Crée une Entrée dans Appareil et service : 
+
+Nom : input_boolean.alerte_boite_aux_lettres et une Alerte Boite aux Lettres

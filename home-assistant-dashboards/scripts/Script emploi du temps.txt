@@ -1,0 +1,89 @@
+Voir vidéo TIKTOK :
+
+Script pour les cours en cours !!! ne s'affiche que quand le cours a lieu au dashbord sinon invisible
+
+-----------------------
+
+type: grid
+columns: 1
+square: false
+cards:
+  - type: conditional
+    conditions:
+      - entity: calendar.esteban
+        state: "on"
+    card:
+      type: button
+      name: "Cours actuel :"
+      state_display: |
+        [[[ 
+          return states['calendar.esteban'].attributes.message;
+        ]]]
+      show_name: true
+      show_state: true
+      show_icon: false
+      entity: calendar.esteban
+      tap_action:
+        action: more-info
+      card_mod:
+        style: |
+          ha-card {
+            width: 100%;
+            height: 70px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding-left: 15px !important;
+            gap: 15px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #1f2937, #4b5563);
+            color: #f9fafb;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+          }
+
+          ha-card::before {
+            content: "📚";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: #2e3b4e;
+            font-size: 24px;
+            border-radius: 50%;
+            border: 2px solid #00BCD4;
+            flex-shrink: 0;
+          }
+
+          .state {
+            color: #00BCD4 !important;
+            margin-left: -10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          ha-card:hover {
+            transform: scale(1.01);
+            background: linear-gradient(135deg, #283046, #667085);
+            cursor: pointer;
+          }
+
+-------------------------------------------------------------------------
+
+
+
+Script calendrier : 
+
+initial_view: listWeek
+type: calendar
+entities:
+  - calendar.esteban
+grid_options:
+  columns: full
+  rows: 8

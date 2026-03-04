@@ -1,0 +1,219 @@
+type: custom:swipe-card
+parameters:
+  spacing: 8
+  scrollbar:
+    hide: false
+    draggable: true
+    snapOnRelease: true
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.salon_temperature_2
+        name: Salon
+        icon: mdi:thermometer
+        icon_color: orange
+        layout: horizontal
+      - type: grid
+        title: Salon et Cuisine ↔️
+        columns: 2
+        square: true
+        cards:
+          - type: button
+            entity: light.salon
+            name: Tout le Salon
+            icon: mdi:lightbulb-group
+            show_state: true
+          - type: button
+            entity: light.plafond
+            name: Plafond
+            icon: mdi:ceiling-light
+          - type: button
+            entity: light.canapes
+            name: Canapés
+            icon: mdi:sofa
+          - type: button
+            entity: light.lampadaire
+            name: Lampadaire
+            icon: mdi:floor-lamp
+          - type: button
+            entity: light.lampe_de_chevet_2
+            name: Lampe de chevet
+            icon: mdi:floor-lamp-outline
+          - type: button
+            entity: light.grosse_boule
+            name: Grosse Boule
+            icon: mdi:circle-double
+          - type: button
+            entity: light.petite_boule
+            name: Petite Boule
+            icon: mdi:circle-outline
+          - type: button
+            entity: light.lsc_smart_led_strip_rgbic_cctic_5m
+            name: LED Cuisine
+            icon: mdi:led-strip-variant
+          - type: button
+            entity: light.cuisine_2
+            name: Plafond Cuisine
+            icon: mdi:lightbulb-outline
+          - type: custom:mushroom-template-card
+            primary: TV Salon
+            entity: switch.prise_1
+            layout: vertical
+            icon: mdi:television-ambient-light
+            secondary: |
+              {% if is_state('switch.prise_1', 'on') %}
+                {{ states('sensor.prise_1_puissance') | float(0) | round(1) }}W | {{ states('sensor.prise_1_courant') | float(0) | round(2) }}A | {{ states('sensor.prise_1_tension') | float(0) | round(1) }}V
+              {% else %}
+                
+              {% endif %}
+            icon_color: "{{ 'info' if is_state('switch.prise_1', 'on') else 'disabled' }}"
+            card_mod:
+              style:
+                mushroom-shape-icon$: |
+                  .shape {
+                    background: none !important;
+                    --icon-symbol-size: 55px;
+                    opacity: {{ '1' if is_state('switch.prise_1', 'on') else '0.3' }};
+                  }
+                .: |
+                  ha-card {
+                    height: 100% !important;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                  .secondary {
+                    color: {{ 'var(--info-color)' if is_state('switch.prise_1', 'on') else 'white' }} !important;
+                    font-size: 10px !important;
+                    white-space: nowrap;
+                  }
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.miaomiaoc_de_blt_4_14kc52pmcgk00_t2_temperature_p_2_1
+        name: Chambre Enfants
+        icon: mdi:baby-face-outline
+        icon_color: green
+        layout: horizontal
+      - type: grid
+        title: ↔️ Chambre des enfants ↔️
+        columns: 2
+        square: true
+        cards:
+          - type: custom:mushroom-template-card
+            primary: PC Esteban
+            entity: switch.prise_3
+            layout: vertical
+            icon: mdi:power-plug
+            secondary: |
+              {% if is_state('switch.prise_3', 'on') %}
+                {{ states('sensor.prise_3_puissance') | float(0) | round(1) }}W | {{ states('sensor.prise_3_courant') | float(0) | round(2) }}A | {{ states('sensor.prise_3_tension') | float(0) | round(1) }}V
+              {% else %}
+                
+              {% endif %}
+            icon_color: "{{ 'info' if is_state('switch.prise_3', 'on') else 'disabled' }}"
+            card_mod:
+              style:
+                mushroom-shape-icon$: |
+                  .shape {
+                    background: none !important;
+                    --icon-symbol-size: 55px;
+                    {% set pwr_val = states('sensor.prise_3_puissance') | float(0) %}
+                    {% if pwr_val > 30.0 %}
+                        opacity: 1;
+                        animation: ultra-tv-thump 1.8s ease-in-out infinite;
+                        --tv-glow: tv-glow-vibration 1.4s ease-in-out infinite;
+                    {% elif is_state('switch.prise_3', 'on') %}
+                        opacity: 1;
+                    {% else %}
+                        opacity: 0.3;
+                    {% endif %}
+                    isolation: isolate;
+                    position: relative;
+                  }
+                  .shape::before {
+                    content: '';
+                    position: absolute; inset: -4px; border-radius: 50%;
+                    z-index: 1; animation: var(--tv-glow);
+                  }
+                  @keyframes ultra-tv-thump {
+                    0%, 100% { transform: scale(1); }
+                    50%  { transform: scale(1.1); } 
+                  }
+                  @keyframes tv-glow-vibration {
+                    0%, 100% { box-shadow: 0 0 10px 2px rgba(255, 0, 0, 0.4); }
+                    50% { box-shadow: 0 0 20px 6px rgba(255, 0, 0, 0.6); }
+                  }
+                .: |
+                  ha-card {
+                    height: 100% !important;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                  .secondary {
+                    color: {{ 'var(--info-color)' if is_state('switch.prise_3', 'on') else 'white' }} !important;
+                    font-size: 10px !important;
+                    white-space: nowrap;
+                  }
+          - type: button
+            entity: switch.esteban_switch_1
+            name: TV Esteban
+            icon: mdi:power-plug
+            show_state: true
+          - type: button
+            entity: switch.nathan_prise
+            name: TV Nathan
+            icon: mdi:power-plug
+            show_state: true
+          - type: button
+            entity: light.pc_3
+            name: Bureau Esteban
+            icon: mdi:led-strip-variant
+            show_state: true
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.miaomiaoc_de_blt_4_14kc2ef10gc00_t2_temperature_p_2_1
+        name: Bureau
+        icon: mdi:thermometer-water
+        icon_color: blue
+        layout: horizontal
+      - type: grid
+        title: ↔️ Bureau Gaming de papa ↔️
+        columns: 2
+        square: true
+        cards:
+          - type: button
+            entity: light.bureau
+            name: Bureau
+            icon: mdi:desk-lamp
+            show_state: true
+          - type: button
+            entity: light.pc
+            name: PC Gauche
+            icon: mdi:monitor
+            show_state: true
+          - type: button
+            entity: light.pc_2
+            name: PC Droite
+            icon: mdi:monitor-shimmer
+            show_state: true
+  - type: grid
+    title: ↔️ Chambre parentale
+    columns: 2
+    square: true
+    cards:
+      - type: button
+        entity: light.chambre_parentale
+        name: Tout Allumer
+        icon: mdi:lightbulb-group
+        show_state: true
+      - type: button
+        entity: light.plafond_2
+        name: Plafond
+        icon: mdi:ceiling-light
+        show_state: true

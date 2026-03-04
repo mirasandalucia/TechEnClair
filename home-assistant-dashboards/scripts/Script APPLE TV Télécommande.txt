@@ -1,0 +1,93 @@
+télécharger dans HACS : Universal Remote Card
+
+Crée une Vue dédié pour la Télécommande :
+
+Avant de la crée cliquer sur les Trois petit point en haut a droite Modifier en Yaml et coller ceci :
+
+
+-----------------------------------------
+
+type: sections
+max_columns: 1
+title: Apple TV 4K
+path: apple-tv-4k
+theme: Nordic Blue Dark
+sections:
+  - type: grid
+    cards:
+      - type: media-control
+        entity: media_player.sejour
+      - type: custom:universal-remote-card
+        remote_id: remote.sejour
+        media_player_id: media_player.sejour
+        platform: Apple TV
+        grid_options:
+          columns: full
+        card_mod:
+          style: >
+            ha-card {
+              background: linear-gradient(135deg, #1f2937, #4b5563) !important;
+              border-radius: 20px !important;
+              border: 1px solid rgba(0, 212, 255, 0.2) !important;
+              padding: 4px !important;
+            }
+
+            /* On écrase le touchpad pour qu'il ne soit qu'une fine zone de
+            glisse */
+
+            .touchpad {
+              height: 100px !important;
+              min-height: 100px !important;
+              margin: 2px 0 !important;
+            }
+
+            /* On colle les lignes les unes aux autres */
+
+            .remote-row {
+              justify-content: center !important;
+              margin-bottom: -2px !important;
+            }
+
+            /* On garde des boutons assez grands pour le doigt */
+
+            .remote-button {
+              --remote-button-background: rgba(255, 255, 255, 0.05) !important;
+              --remote-button-color: #f9fafb !important;
+              height: 48px !important; 
+            }
+
+            /* Suppression des marges internes du container de boutons */
+
+            .remote-row-container {
+              gap: 2px !important;
+            }
+
+            [data-id="power"] { --remote-button-color: #ff5252 !important; }
+
+            [data-id="play_pause"] { --remote-button-color: #00d4ff !important;
+            }
+        rows:
+          - - back
+            - power
+            - home
+            - menu
+          - - touchpad
+          - - volume_buttons
+          - - rewind
+            - previous
+            - play_pause
+            - next
+            - fast_forward
+          - - netflix
+            - plex
+            - primevideo
+            - twitch
+            - disney
+            - youtube
+icon: mdi:apple
+cards: []
+
+
+--------------------------------------------------------------------------
+
+Changer le nom du player entity.media_player.sejour par le votre ainsi que quand la partie de la télécommande. Au pire des cas on peut le faire via le dashbord au pire.

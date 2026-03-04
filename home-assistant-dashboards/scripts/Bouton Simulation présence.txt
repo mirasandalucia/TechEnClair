@@ -1,0 +1,67 @@
+type: custom:button-card
+entity: switch.simulation
+name: Simulation présence
+label: Simulation de présence
+show_label: true
+show_state: true
+styles:
+  card:
+    - background: "linear-gradient(135deg, #1f2937, #4b5563)"
+    - border-radius: 15px
+    - border: 1px solid rgba(255, 255, 255, 0.1)
+    - box-shadow: 0 4px 12px rgba(0,0,0,0.3)
+    - position: relative
+    - overflow: hidden
+    - height: 120px
+    - transition: all 0.3s ease-in-out
+  grid:
+    - grid-template-areas: "\"i n\" \"i l\" \"i s\""
+    - grid-template-columns: 1fr 2fr
+  icon:
+    - width: 45px
+    - color: "#e5a00d"
+    - filter: |
+        [[[ 
+          return entity.state === 'on' 
+          ? 'drop-shadow(0 0 10px #e5a00d)' 
+          : 'grayscale(0.8) opacity(0.4)' 
+        ]]]
+  name:
+    - justify-self: start
+    - font-weight: 700
+    - font-size: 14px
+    - color: "#f9fafb"
+    - text-transform: uppercase
+    - margin-bottom: 2px
+  label:
+    - justify-self: start
+    - font-size: 11px
+    - color: "#9ca3af"
+  state:
+    - justify-self: start
+    - font-size: 12px
+    - font-weight: bold
+    - color: |
+        [[[ return entity.state === 'on' ? '#e5a00d' : '#4b5563' ]]]
+custom_fields:
+  bg_logo: |
+    [[[
+      return `<img src="https://api.iconify.design/mdi:shield-home.svg?color=%23ffffff" 
+      style="position: absolute; top: 10%; right: -10%; width: 100px; opacity: 0.05; pointer-events: none;">`;
+    ]]]
+state:
+  - value: "on"
+    styles:
+      card:
+        - filter: brightness(1.1)
+        - border: 1px solid rgba(229, 160, 13, 0.4)
+  - value: "off"
+    styles:
+      card:
+        - filter: brightness(0.8)
+        - background: "linear-gradient(135deg, #111827, #1f2937)"
+extra_styles: |
+  ha-card:hover {
+    transform: scale(1.02);
+    filter: brightness(1.2);
+  }

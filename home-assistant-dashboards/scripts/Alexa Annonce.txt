@@ -1,0 +1,184 @@
+Pré requis : Browser mod pour le POPUP 
+
+Code du dashbord :
+
+--------------------------------------------------------------------
+
+type: grid
+columns: 1
+square: false
+cards:
+  - type: button
+    name: Alexa Annonce
+    show_name: true
+    show_state: false
+    show_icon: false
+    entity: script.annonce_repas
+    tap_action:
+      action: fire-dom-event
+      browser_mod:
+        service: browser_mod.popup
+        data:
+          title: Choisir une annonce
+          content:
+            type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: button
+                name: À TABLE !
+                icon: mdi:silverware-fork-knife
+                tap_action:
+                  action: call-service
+                  service: script.annonce_repas
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: linear-gradient(135deg, #1f2937, #4b5563);
+                      border-radius: 12px;
+                      border: 1px solid #00d1ff;
+                      height: 80px !important;
+                      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                    }
+                    :host {
+                      --mdc-icon-size: 28px;
+                      color: #00d1ff;
+                    }
+              - type: button
+                name: ON Y VA !
+                icon: mdi:run-fast
+                tap_action:
+                  action: call-service
+                  service: script.annonce_on_y_vas
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: linear-gradient(135deg, #1f2937, #4b5563);
+                      border-radius: 12px;
+                      border: 1px solid #00d1ff;
+                      height: 80px !important;
+                      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                    }
+                    :host {
+                      --mdc-icon-size: 28px;
+                      color: #00d1ff;
+                    }
+              - type: button
+                name: ÉCOLE
+                icon: mdi:school
+                tap_action:
+                  action: call-service
+                  service: script.annonce_ecole
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: linear-gradient(135deg, #1f2937, #4b5563);
+                      border-radius: 12px;
+                      border: 1px solid #00d1ff;
+                      height: 80px !important;
+                      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                    }
+                    :host {
+                      --mdc-icon-size: 28px;
+                      color: #00d1ff;
+                    }
+              - type: button
+                name: DESCENDRE
+                icon: mdi:stairs-down
+                tap_action:
+                  action: call-service
+                  service: script.annonce_descendre
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: linear-gradient(135deg, #1f2937, #4b5563);
+                      border-radius: 12px;
+                      border: 1px solid #00d1ff;
+                      height: 80px !important;
+                      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                    }
+                    :host {
+                      --mdc-icon-size: 28px;
+                      color: #00d1ff;
+                    }
+    card_mod:
+      style: |
+        ha-card {
+          width: 100%;
+          height: 70px !important;
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding-left: 0px !important;
+          gap: 15px;
+          border-radius: 15px;
+          background: linear-gradient(135deg, #1f2937, #4b5563);
+          color: #f9fafb;
+          font-weight: 700;
+          font-size: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          transition: all 0.3s ease-in-out;
+          overflow: hidden;
+          position: relative;
+        }
+
+        /* L'icône Alexa dans le cercle */
+        ha-card::before {
+          content: "󰄿"; /* Code pour l'icône Amazon Alexa */
+          font-family: "Material Design Icons";
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 45px;
+          height: 45px;
+          background-color: #1f2937;
+          color: #00d1ff; 
+          font-size: 28px;
+          border-radius: 50%;
+          border: 2px solid #00d1ff;
+          flex-shrink: 0;
+          z-index: 1;
+          box-shadow: 0 0 10px rgba(0, 209, 255, 0.4);
+        }
+
+        ha-card::after {
+          content: "📢";
+          position: absolute;
+          right: -5px;
+          bottom: -15px;
+          font-size: 5rem;
+          opacity: 0.15;
+          filter: grayscale(1) brightness(1.5);
+          transform: rotate(-10deg);
+          pointer-events: none;
+        }
+
+        .name {
+          z-index: 1;
+        }
+
+        ha-card:hover {
+          transform: scale(1.01);
+          background: linear-gradient(135deg, #283046, #667085);
+          cursor: pointer;
+        }
+
+----------------------------------------------------------------
+
+Code dans --->Script<--- (automatisation)
+Modifier en Yamls et on colle le code : (changer le nom et le message)
+
+-----------------------------------------------
+
+sequence:
+  - action: notify.alexa_media_everywhere
+    data:
+      message: Les enfants, descendez rapidement !
+      data:
+        type: announce
+        method: speak
+alias: Annonce Descendre
+mode: single
+icon: mdi:amazon-alexa
+description: ""

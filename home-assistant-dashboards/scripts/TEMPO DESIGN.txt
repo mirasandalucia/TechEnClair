@@ -1,0 +1,202 @@
+VOICI LES DESIGN EDF TEMPO POUR LE JOUR AUJOURDHUI ET DEMAIN :
+
+
+
+------------------------------------------------
+
+
+type: tile
+grid_options:
+  columns: 2
+  rows: 1
+entity: sensor.tarif_tempo_couleur_aujourd_hui
+name: Aujourd'hui
+secondary_info: sensor.linky_cout_hier
+hide_state: false
+vertical: false
+card_mod:
+  style: |
+    {% set etat = states('sensor.tarif_tempo_couleur_aujourd_hui') | lower %}
+    ha-card {
+      /* Fond dynamique sur TOUTE la tuile */
+      {% if 'bleu' in etat %}
+        background: rgba(33, 150, 243, 0.2) !important;
+        --tile-color: #2196f3 !important;
+      {% elif 'blanc' in etat %}
+        background: rgba(255, 255, 255, 0.15) !important;
+        --tile-color: #ffffff !important;
+      {% elif 'rouge' in etat %}
+        background: rgba(244, 67, 54, 0.3) !important;
+        --tile-color: #f44336 !important;
+        animation: blink 2s linear infinite;
+      {% else %}
+        background: rgba(188, 158, 130, 0.2) !important;
+      {% endif %}
+      
+      border: none !important;
+      height: 100% !important;
+    }
+
+    /* Style pour rendre le coût plus lisible en info secondaire */
+    .secondary {
+      color: white !important;
+      font-weight: bold !important;
+    }
+
+    /* Animation de clignotement pour le rouge */
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+-------------------------------------------------------------------------------------
+
+type: tile
+grid_options:
+  columns: 2
+  rows: 1
+entity: sensor.tarif_tempo_couleur_demain
+name: Demain
+secondary_info: sensor.linky_tarif_actuel
+hide_state: false
+vertical: false
+card_mod:
+  style: |
+    {% set etat = states('sensor.tarif_tempo_couleur_demain') | lower %}
+    ha-card {
+      /* Fond dynamique basé sur la couleur de demain */
+      {% if 'bleu' in etat %}
+        background: rgba(33, 150, 243, 0.2) !important;
+        --tile-color: #2196f3 !important;
+      {% elif 'blanc' in etat %}
+        background: rgba(255, 255, 255, 0.15) !important;
+        --tile-color: #ffffff !important;
+      {% elif 'rouge' in etat %}
+        background: rgba(244, 67, 54, 0.3) !important;
+        --tile-color: #f44336 !important;
+        animation: blink 2s linear infinite;
+      {% else %}
+        background: rgba(188, 158, 130, 0.2) !important;
+      {% endif %}
+      
+      border: none !important;
+      height: 100% !important;
+    }
+
+    .secondary {
+      color: rgba(255, 255, 255, 0.8) !important;
+      font-weight: 500 !important;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+AUTRE DESIGN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+type: tile
+entity: sensor.tarif_tempo_couleur_aujourd_hui
+vertical: true
+features_position: bottom
+card_mod:
+  style: |
+    ha-card {
+      {% set etat = states('sensor.tarif_tempo_couleur_aujourd_hui') | lower %}
+      /* Couleur du fond de la carte */
+      {% if 'bleu' in etat %}
+        background-color: #2196F3 !important;
+        --primary-text-color: white;
+        --secondary-text-color: #e0e0e0;
+      {% elif 'blanc' in etat %}
+        background-color: #f2f2f2 !important;
+        --primary-text-color: black;
+        --secondary-text-color: #555555;
+      {% elif 'rouge' in etat %}
+        background-color: #f44336 !important;
+        --primary-text-color: white;
+        --secondary-text-color: #e0e0e0;
+      {% else %}
+        background-color: grey !important;
+      {% endif %}
+    }
+    ha-tile-icon {
+      /* On force l'icône à rester blanche ou contrastée */
+      {% set etat = states('sensor.tarif_tempo_couleur_aujourd_hui') | lower %}
+      {% if 'blanc' in etat %}
+        --tile-color: #2196F3 !important; /* Bleu sur fond blanc pour la visibilité */
+      {% else %}
+        --tile-color: white !important;
+      {% endif %}
+    }
+    :host {
+      /* Gestion de l'icône */
+      {% set etat = states('sensor.tarif_tempo_couleur_aujourd_hui') | lower %}
+      {% if 'rouge' in etat %}
+        --card-mod-icon: mdi:flash-alert !important;
+      {% elif 'blanc' in etat %}
+        --card-mod-icon: mdi:flash-circle !important;
+      {% else %}
+        --card-mod-icon: mdi:flash !important;
+      {% endif %}
+    }
+
+-------------------------------------------------------------------------------------
+
+type: tile
+entity: sensor.tarif_tempo_couleur_demain
+vertical: true
+features_position: bottom
+card_mod:
+  style: |
+    ha-card {
+      {% set etat = states('sensor.tarif_tempo_couleur_demain') | lower %}
+      /* Couleur du fond de la carte */
+      {% if 'bleu' in etat %}
+        background-color: #2196F3 !important;
+        --primary-text-color: white;
+        --secondary-text-color: #e0e0e0;
+      {% elif 'blanc' in etat %}
+        background-color: #f2f2f2 !important;
+        --primary-text-color: black;
+        --secondary-text-color: #555555;
+      {% elif 'rouge' in etat %}
+        background-color: #f44336 !important;
+        --primary-text-color: white;
+        --secondary-text-color: #e0e0e0;
+      {% else %}
+        background-color: grey !important;
+        --primary-text-color: white;
+      {% endif %}
+    }
+    ha-tile-icon {
+      {% set etat = states('sensor.tarif_tempo_couleur_demain') | lower %}
+      /* Contraste de l'icône */
+      {% if 'blanc' in etat %}
+        --tile-color: #2196F3 !important;
+      {% else %}
+        --tile-color: white !important;
+      {% endif %}
+    }
+    :host {
+      /* Gestion de l'icône */
+      {% set etat = states('sensor.tarif_tempo_couleur_demain') | lower %}
+      {% if 'rouge' in etat %}
+        --card-mod-icon: mdi:flash-alert !important;
+      {% elif 'blanc' in etat %}
+        --card-mod-icon: mdi:flash-circle !important;
+      {% elif 'bleu' in etat %}
+        --card-mod-icon: mdi:flash !important;
+      {% else %}
+        --card-mod-icon: mdi:clock-outline !important;
+      {% endif %}
+    }

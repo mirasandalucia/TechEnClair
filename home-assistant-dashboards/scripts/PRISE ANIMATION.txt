@@ -1,0 +1,167 @@
+PRISE TV (le script déclenche l'animation si la consommation dépasse 20W) Vous pouvez le changer via chatgpt/Gemini a votre guise. 
+
+Pré requis avoir mushroom-entity-card installé via hacs
+
+Le lien pour les autres animation
+
+-------------------------------------------------
+PRISE TV
+
+type: custom:mushroom-template-card
+primary: Salon TV / Apple TV / Home cinéma
+secondary: |
+  {% set pwr = states('sensor.prise_1_puissance') | float(0) | round(1) %}
+  {% set amp = states('sensor.prise_1_courant') | float(0) | round(2) %}
+  {% set volt = states('sensor.prise_1_tension') | float(0) | round(1) %}
+  {{ pwr }} W | {{ amp }} A | {{ volt }} V
+entity: switch.prise_1
+icon: mdi:television-play
+icon_color: red
+tap_action:
+  action: toggle
+card_mod:
+  style:
+    mushroom-shape-icon$: |
+      .shape {
+        {# ========== CONFIGURATION DU SEUIL ========== #}
+        {% set pwr_val = states('sensor.prise_1_puissance') | float(0) %}
+        {# On monte le seuil à 20W car la veille consomme 12W #}
+        {% set threshold = 20.0 %} 
+        {% set trigger_active = (pwr_val > threshold) %}
+        {# ============================================ #}
+
+        {% if trigger_active %}
+           opacity: 1;
+           animation: ultra-tv-thump 1.8s ease-in-out infinite;
+           --tv-glow: tv-glow-vibration 1.4s ease-in-out infinite;
+        {% else %}
+           opacity: 0.8;
+           animation: none;
+           --tv-glow: none;
+        {% endif %}
+        
+        isolation: isolate;
+        position: relative;
+      }
+
+      .shape::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        z-index: 1;
+        animation: var(--tv-glow);
+      }
+
+      @keyframes ultra-tv-thump {
+        0%, 100% { transform: scale(1); }
+        50%  { transform: scale(1.08); } 
+      }
+
+      @keyframes tv-glow-vibration {
+        0%, 100% {
+          box-shadow:
+            0 0 8px 2px rgba(255, 0, 0, 0.4),
+            -4px 0 10px -4px rgba(255, 0, 0, 0.5),
+             4px 0 10px -4px rgba(0, 128, 255, 0.5);
+        }
+        50% {
+          box-shadow:
+            0 0 18px 6px rgba(255, 0, 0, 0.7),
+            -8px 0 14px -4px rgba(255, 0, 0, 0.7),
+             8px 0 14px -4px rgba(0, 128, 255, 0.7);
+        }
+      }
+    .: |
+      mushroom-shape-icon {
+        --icon-size: 65px;
+        display: flex;
+        margin: -16px 0px 10px -15px !important;
+        padding-right: 10px;
+      }
+      ha-card {
+        clip-path: inset(0 0 0 0 round var(--ha-card-border-radius,12px));
+      }
+
+--------------------------------------------------------------------------------------------------
+
+Lave vaisselle : 
+
+type: custom:mushroom-template-card
+primary: Lave vaisselle
+secondary: |
+  {% set pwr = states('sensor.prise_2_puissance') | float(0) | round(1) %}
+  {% set amp = states('sensor.prise_2_courant') | float(0) | round(2) %}
+  {% set volt = states('sensor.prise_2_tension') | float(0) | round(1) %}
+  {{ pwr }} W | {{ amp }} A | {{ volt }} V
+entity: switch.prise_2
+icon: mdi:washing-machine
+icon_color: blue
+tap_action:
+  action: toggle
+card_mod:
+  style:
+    mushroom-shape-icon$: >
+      .shape {
+        {# ========== CONFIGURATION ANIMATION ========== #}
+        {% set pwr_val = states('sensor.prise_2_puissance') | float(0) %}
+        {% set threshold = 2.0 %}
+        {% set is_running = (pwr_val > threshold) %}
+        {# ============================================= #}
+
+        {% if is_running %}
+           opacity: 1;
+           --wash-glow: ultra-wash-glow 1.8s ease-in-out infinite;
+           --wash-drum: spin-laundry 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+           animation: ultra-wash-thump 1.8s ease-in-out infinite;
+        {% else %}
+           opacity: 0.8;
+           --wash-glow: none;
+           --wash-drum: none;
+           animation: none;
+        {% endif %}
+        isolation: isolate;
+        position: relative;
+      }
+
+
+      .shape::after {
+        content: "";
+        position: absolute;
+        top: 58%; left: 50%; width: 24px; height: 24px;
+        border-radius: 50%; z-index: 2;
+        background: conic-gradient(from 0deg, transparent 0deg, var(--icon-color) 40deg, transparent 100deg, var(--icon-color) 160deg, var(--icon-color) 200deg, transparent 280deg, var(--icon-color) 320deg);
+        filter: blur(0.8px); opacity: 0.7;
+        animation: var(--wash-drum);
+        display: {% if states('sensor.prise_2_puissance') | float(0) > 2.0 %} block {% else %} none {% endif %};
+      }
+
+
+      .shape::before {
+        content: ''; position: absolute; inset: -4px; border-radius: 50%; z-index: 1; animation: var(--wash-glow);
+      }
+
+
+      @keyframes spin-laundry { 0% { transform: translate(-50%, -50%)
+      rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+
+      @keyframes ultra-wash-glow { 0%, 100% { box-shadow: 0 0 10px 3px
+      rgba(var(--rgb-blue), 0.6), 0 0 20px 8px rgba(var(--rgb-blue), 0.3); } 50%
+      { box-shadow: 0 0 18px 6px rgba(var(--rgb-blue), 0.9), 0 0 32px 12px
+      rgba(var(--rgb-blue), 0.4); } }
+
+      @keyframes ultra-wash-thump { 0%, 100% { transform: scale(1); } 50% {
+      transform: scale(1.05); } }
+    .: |
+      mushroom-shape-icon {
+        --icon-size: 65px;
+        display: flex;
+        margin: -16px 0 10px -16px !important;
+        padding-right: 10px;
+      }
+      ha-card {
+        clip-path: inset(0 0 0 0 round var(--ha-card-border-radius, 12px));
+      }
+-----------------------------------------------------------------------------------------------------------
+

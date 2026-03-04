@@ -1,0 +1,288 @@
+type: grid
+columns: 2
+square: false
+cards:
+  - type: picture-elements
+    aspect_ratio: 1/1.2
+    image: media-source://image_upload/e7a98615a88c526bf2a07f45cf32d56b
+    elements:
+      - type: conditional
+        conditions:
+          - entity: person.miras
+            state: home
+        elements:
+          - type: icon
+            icon: mdi:home
+            style:
+              top: 92%
+              left: 10%
+              color: white
+      - type: conditional
+        conditions:
+          - entity: sensor.mirasandalucia45_online_status
+            state_not: offline
+        elements:
+          - type: icon
+            icon: mdi:sony-playstation
+            style:
+              top: 7%
+              left: 7%
+            card_mod:
+              style: >-
+                ha-icon { color: #88C0D0 !important; filter: drop-shadow(2px 2px
+                2px rgba(0,0,0,0.8)); }
+          - type: state-label
+            entity: sensor.mirasandalucia45_online_status
+            style:
+              top: 7%
+              left: 28%
+              font-weight: bold
+              text-shadow: 1px 1px 3px rgba(0,0,0,0.8)
+            card_mod:
+              style: >-
+                div { font-size: 0px; } div::before { content: 'En ligne';
+                font-size: 14px; color: #88C0D0; }
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.s24_ping
+            state: "on"
+        elements:
+          - type: icon
+            icon: mdi:wifi
+            style:
+              top: 7%
+              left: 78%
+            card_mod:
+              style: >-
+                ha-icon { color: #88C0D0 !important; filter: drop-shadow(2px 2px
+                2px rgba(0,0,0,0.8)); }
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.s24_ping
+            state: "off"
+        elements:
+          - type: icon
+            icon: mdi:signal-variant
+            style:
+              top: 7%
+              left: 78%
+            card_mod:
+              style: >-
+                ha-icon { color: #88C0D0 !important; filter: drop-shadow(2px 2px
+                2px rgba(0,0,0,0.8)); }
+      - type: state-icon
+        entity: sensor.sm_s921b_battery_level
+        style:
+          top: 7%
+          left: 90%
+        card_mod:
+          style: >-
+            :host { --paper-item-icon-color: white !important; transform:
+            scale(1.3); }
+      - type: state-label
+        entity: sensor.sm_s921b_battery_level
+        style:
+          top: 93%
+          left: 50%
+          font-size: 16px
+          font-weight: bold
+          color: white
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.9)
+          background-color: rgba(0,0,0,0.5)
+          padding: 5px 15px
+          border-radius: 10px
+  - type: picture-elements
+    aspect_ratio: 1/1.2
+    image: media-source://image_upload/80b8e2743bbb74765285f12cdb3ad067
+    elements:
+      - type: conditional
+        conditions:
+          - entity: person.julie
+            state: home
+        elements:
+          - type: icon
+            icon: mdi:home
+            style:
+              top: 92%
+              left: 10%
+              color: white
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.s25_ping
+            state: "on"
+        elements:
+          - type: icon
+            icon: mdi:wifi
+            style:
+              top: 7%
+              left: 78%
+            card_mod:
+              style: >-
+                ha-icon { color: #88C0D0 !important; filter: drop-shadow(2px 2px
+                2px rgba(0,0,0,0.8)); }
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.s25_ping
+            state: "off"
+        elements:
+          - type: icon
+            icon: mdi:signal-variant
+            style:
+              top: 7%
+              left: 78%
+            card_mod:
+              style: >-
+                ha-icon { color: #88C0D0 !important; filter: drop-shadow(2px 2px
+                2px rgba(0,0,0,0.8)); }
+      - type: state-icon
+        entity: sensor.sm_julie_battery_level
+        style:
+          top: 7%
+          left: 90%
+        card_mod:
+          style: >-
+            :host { --paper-item-icon-color: white !important; transform:
+            scale(1.3); }
+      - type: state-label
+        entity: sensor.sm_julie_battery_level
+        style:
+          top: 93%
+          left: 50%
+          font-size: 16px
+          font-weight: bold
+          color: white
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.9)
+          background-color: rgba(0,0,0,0.5)
+          padding: 5px 15px
+          border-radius: 10px
+  - type: picture-elements
+    aspect_ratio: 1/1.2
+    image: /api/image/serve/8e4b605c7c2fe033ff39cf32df650a51/512x512
+    elements:
+      - type: image
+        image: >-
+          data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
+        style:
+          top: 50%
+          left: 50%
+          width: 100%
+          height: 100%
+        tap_action:
+          action: navigate
+          navigation_path: /dashboard-home/esteban
+      - type: conditional
+        conditions:
+          - entity: person.esteban
+            state: home
+        elements:
+          - type: icon
+            icon: mdi:home
+            style:
+              top: 92%
+              left: 10%
+              color: white
+      - type: icon
+        icon: mdi:desktop-tower
+        entity: sensor.prise_3_puissance
+        style:
+          top: 7%
+          left: 7%
+        card_mod:
+          style: >-
+            :host { display: {{ 'block' if states('sensor.prise_3_puissance') |
+            float(0) > 100 else 'none' }}; } ha-icon { color: #A3BE8C
+            !important; }
+      - type: state-label
+        entity: sensor.prise_3_puissance
+        style:
+          top: 7%
+          left: 28%
+          font-weight: bold
+          text-shadow: 1px 1px 3px rgba(0,0,0,0.9)
+        card_mod:
+          style: >-
+            :host { display: {{ 'block' if states('sensor.prise_3_puissance') |
+            float(0) > 100 else 'none' }}; } div { font-size: 0; } div::before {
+            content: 'En ligne'; font-size: 14px; color: #A3BE8C; }
+      - type: state-icon
+        entity: sensor.esteban_battery_level
+        style:
+          top: 7%
+          left: 90%
+        card_mod:
+          style: >-
+            :host { --paper-item-icon-color: white !important; transform:
+            scale(1.3); }
+      - type: state-label
+        entity: sensor.esteban_battery_level
+        style:
+          top: 93%
+          left: 50%
+          font-size: 16px
+          font-weight: bold
+          color: white
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.9)
+          background-color: rgba(0,0,0,0.5)
+          padding: 5px 15px
+          border-radius: 10px
+  - type: picture-elements
+    aspect_ratio: 1/1.2
+    image: /api/image/serve/88239ec9b843ae879e9bd00315f9f570/original
+    elements:
+      - type: conditional
+        conditions:
+          - entity: person.nathan
+            state: home
+        elements:
+          - type: icon
+            icon: mdi:home
+            style:
+              top: 92%
+              left: 10%
+              color: white
+      - type: conditional
+        conditions:
+          - entity: binary_sensor.xbox_nathan_status
+            state: "on"
+        elements:
+          - type: icon
+            icon: mdi:microsoft-xbox
+            style:
+              top: 7%
+              left: 7%
+            card_mod:
+              style: >-
+                ha-icon { color: #A3BE8C !important; animation: pulse 2s
+                infinite; }
+          - type: state-label
+            entity: sensor.nathoune45_status
+            style:
+              top: 7%
+              left: 28%
+              font-weight: bold
+              text-shadow: 1px 1px 3px rgba(0,0,0,0.9)
+            card_mod:
+              style: >-
+                div { font-size: 0; } div::before { content: 'En ligne';
+                font-size: 14px; color: #A3BE8C; }
+      - type: state-icon
+        entity: sensor.nathan_battery_level
+        style:
+          top: 7%
+          left: 90%
+        card_mod:
+          style: >-
+            :host { --paper-item-icon-color: white !important; transform:
+            scale(1.3); }
+      - type: state-label
+        entity: sensor.nathan_battery_level
+        style:
+          top: 93%
+          left: 50%
+          font-size: 16px
+          font-weight: bold
+          color: white
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.9)
+          background-color: rgba(0,0,0,0.5)
+          padding: 5px 15px
+          border-radius: 10px

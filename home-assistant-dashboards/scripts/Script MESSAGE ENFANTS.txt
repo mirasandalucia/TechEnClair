@@ -1,0 +1,291 @@
+Tout d'abord crée une ENTREE dans Appareils et service puis / Entrée puis chercher TEXTE et coller dans Nom ceci : Message Enfant
+
+---------------------------------------------------------------------------
+
+alias: Envoi Message Enfant vers Maman
+sequence:
+  - data:
+      title: Message de la maison 🏠
+      message: "{{ states('input_text.message_enfant') }}"
+      data:
+        priority: high
+        ttl: 0
+    action: notify.mobile_app_sm_julie
+  - target:
+      entity_id: input_text.message_enfant
+    data:
+      value: ""
+    action: input_text.set_value
+mode: single
+description: ""
+
+-------------------------------------------------------------------------------------
+
+Automatisation - Script - Crée un script puis trois petit points Modifier en Yaml puis coller le script : modifier Action par votre mobile
+
+------------------------------------------------------------------------------------------------------------------------------
+
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: input_text.message_enfant
+        name: "Tape ton message :"
+        icon: mdi:comment-edit
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: button
+        name: Maman
+        image: /api/image/serve/0f04e76551b997d983421d0a3d46f53e/512x512
+        tap_action:
+          action: call-service
+          service: script.envoi_message_enfant_vers_maman
+      - type: button
+        name: Papa
+        image: /api/image/serve/3690d56c9a3028f80455a2a22026131c/512x512
+        tap_action:
+          action: call-service
+          service: script.envoi_message_enfant_vers_papa
+
+------------------------------------------------------------------------------------------------------------------
+
+Le 2eme c'est le script pour le dashbord
+
+Autre DESIGN : 
+-------------------------------------------------------------------------------------------
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: input_text.message_enfant
+        name: Écrit ici
+        icon: mdi:message-text
+    card_mod:
+      style: |
+        ha-card {
+          border-radius: 20px;
+          padding: 10px;
+          background: linear-gradient(145deg, #1e1f25, #2a2c34);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: button
+        name: Maman
+        image: /api/image/serve/0f04e76551b997d983421d0a3d46f53e/512x512
+        tap_action:
+          action: call-service
+          service: script.envoi_message_enfant_vers_maman
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 20px;
+              background: linear-gradient(145deg, #3a3d46, #2a2c34);
+              color: white;
+              font-weight: 600;
+              overflow: hidden;
+              box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+              transition: 0.3s;
+            }
+            ha-card:hover {
+              transform: scale(1.05);
+            }
+      - type: button
+        name: Papa
+        image: /api/image/serve/3690d56c9a3028f80455a2a22026131c/512x512
+        tap_action:
+          action: call-service
+          service: script.envoi_message_enfant_vers_papa
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 20px;
+              background: linear-gradient(145deg, #3a3d46, #2a2c34);
+              color: white;
+              font-weight: 600;
+              overflow: hidden;
+              box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+              transition: 0.3s;
+            }
+            ha-card:hover {
+              transform: scale(1.05);
+            }
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: button
+        name: Esteban
+        tap_action:
+          action: call-service
+          service: script.envoi_message_enfant_vers_esteban
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 20px;
+              background: linear-gradient(145deg, #3a3d46, #2a2c34);
+              color: white;
+              font-weight: 600;
+              box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+              transition: 0.3s;
+            }
+            ha-card:hover {
+              transform: scale(1.05);
+            }
+      - type: button
+        name: Nathan
+        tap_action:
+          action: call-service
+          service: script.envoi_message_enfant_vers_nathan
+        card_mod:
+          style: |
+            ha-card {
+              border-radius: 20px;
+              background: linear-gradient(145deg, #3a3d46, #2a2c34);
+              color: white;
+              font-weight: 600;
+              box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+              transition: 0.3s;
+            }
+            ha-card:hover {
+              transform: scale(1.05);
+            }
+
+-------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
+----------------------------------------------------
+
+Le Dernier et le script en version POPUP pour le dashbord : il faut installer browser_mod dans HACS et après l'ajouter dans Appareil & service !!!!!!!!
+
+
+type: custom:mushroom-template-card
+primary: ENVOYER UN MESSAGE
+secondary: ""
+icon: mdi:send-variant
+icon_color: "#88C0D0"
+tap_action:
+  action: fire-dom-event
+  browser_mod:
+    service: browser_mod.popup
+    data:
+      title: Nouveau Message
+      content:
+        type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: input_text.message_enfant
+                name: Tape ton message ici
+            card_mod:
+              style: |
+                ha-card {
+                  background: #1c1e26;
+                  border: 1px solid #444953;
+                  border-radius: 20px;
+                }
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: button
+                name: Maman
+                image: /api/image/serve/0f04e76551b997d983421d0a3d46f53e/512x512
+                tap_action:
+                  action: call-service
+                  service: script.envoi_message_enfant_vers_maman
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 20px;
+                      background: #2a2c34;
+                      border: 2px solid #88C0D0;
+                    }
+              - type: button
+                name: Papa
+                image: /api/image/serve/3690d56c9a3028f80455a2a22026131c/512x512
+                tap_action:
+                  action: call-service
+                  service: script.envoi_message_enfant_vers_papa
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 20px;
+                      background: #2a2c34;
+                      border: 2px solid #88C0D0;
+                    }
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: button
+                name: Esteban
+                show_icon: false
+                tap_action:
+                  action: call-service
+                  service: script.envoi_message_enfant_vers_esteban
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 20px;
+                      background: #2a2c34;
+                      border: 2px solid #88C0D0;
+                      height: 80px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      color: white;
+                    }
+              - type: button
+                name: Nathan
+                show_icon: false
+                tap_action:
+                  action: call-service
+                  service: script.envoi_message_enfant_vers_nathan
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 20px;
+                      background: #2a2c34;
+                      border: 2px solid #88C0D0;
+                      height: 80px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      color: white;
+                    }
+card_mod:
+  style: |
+    ha-card {
+      background: #2a2c34 !important;
+      border-radius: 12px !important;
+      border: 2px solid #88C0D0 !important;
+      height: 55px !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mushroom-state-item {
+      flex-direction: row !important;
+      margin-top: 0px !important;
+      justify-content: center !important;
+    }
+    .mushroom-shape-icon {
+      --icon-size: 35px;
+      background: none !important; /* On retire le rond derrière l'icône */
+    }
+    .primary {
+      font-weight: bold !important;
+      color: #88C0D0 !important;
+      font-size: 16px !important;
+      margin-left: 10px !important;
+    }
+
+
+
+
+

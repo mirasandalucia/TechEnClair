@@ -1,0 +1,47 @@
+Récupéré les ID Browser MOD (barre latéral de gauche et activer bien REGISTER)
+
+--------------------------------------------------
+
+Code AUTOMATISATION : Remplacer bien le clique de la sonnette les ID Browser et EVENT pour l'image ou live si vous avez.
+
+alias: Affichage Caméra Sonnette - Plein Écran
+description: Affiche la caméra sur PC et Tablette via Browser Mod
+triggers:
+  - entity_id: binary_sensor.sonnette_ringing
+    to: "on"
+    trigger: state
+actions:
+  - data:
+      browser_id:
+        - browser_mod_aefefc30_77e515eb
+        - browser_mod_8cf8e514_485e2cfe
+      title: Quelqu'un est à la porte
+      size: fullscreen
+      timeout: 30000
+      content:
+        type: picture-glance
+        camera_view: auto
+        fit_mode: cover
+        image_entity: image.sonnette_event_image
+        entities: []
+        card_mod:
+          style: |
+            ha-card {
+              background: rgba(255, 255, 255, 0.05) !important;
+              backdrop-filter: blur(20px) !important;
+              -webkit-backdrop-filter: blur(20px) !important;
+              border-radius: 30px !important;
+              border: 1px solid rgba(255, 255, 255, 0.1) !important;
+              box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+              overflow: hidden;
+              height: 100vh; /* Utilise toute la hauteur de l'écran */
+            }
+            .title {
+              background: rgba(0, 0, 0, 0.3) !important;
+              backdrop-filter: blur(10px) !important;
+              font-weight: 300 !important;
+              font-family: 'SF Pro Display', sans-serif !important;
+              color: white !important;
+            }
+    action: browser_mod.popup
+mode: single

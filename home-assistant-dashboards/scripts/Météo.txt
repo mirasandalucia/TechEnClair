@@ -1,0 +1,23 @@
+type: custom:clock-weather-card
+entity: weather.forecast_amilly
+title: Amilly
+hide_today_section: false
+hide_forecast_section: false
+animated_icon: true
+forecast_days: 5
+locale: fr
+time_format: 24
+card_mod:
+  style: |
+    ha-card {
+      background-color: var(--ha-card-background, #1c1c1e) !important;
+      border-radius: 20px 20px 0px 0px !important;
+      border: none !important;
+      margin-bottom: -1px !important; /* Pour coller les boutons à la météo */
+    }
+
+
+
+------------------------------------
+
+Avoir la carte Clock Weather Card
