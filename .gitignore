@@ -15,3 +15,5 @@ __pycache__/
 # node/hacs caches
 node_modules/
 www/community/
+# Logo
+Logo.webp

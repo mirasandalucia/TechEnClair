@@ -1,59 +1,45 @@
 # TechEnClair – Ressources Home Assistant
 
-Ensemble de snippets et ressources pour personnaliser Home Assistant : scripts prêts à copier, dossier pour vos dashboards, thèmes et visuels.
+![TechEnClair](Logo.webp)
 
-## Arborescence
+Kit public de snippets YAML, exemples d’automations et espaces prêts à remplir pour vos dashboards, thèmes et assets. Conçu pour démarrer rapidement sans exposer de secrets.
+
+## Contenu du dépôt
 ```
 TechEnClair/
-+-- .gitignore
-+-- LICENSE
-+-- README.md
 +-- custom-cards/
-¦   +-- instructions.md
-+-- dashboards/            # placez ici vos vues Lovelace (.yaml)
+¦   +-- instructions.md            # prérequis pour certaines cartes custom
++-- dashboards/                    # vos dashboards Lovelace (.yaml)
 +-- images/
-¦   +-- Poubelle.webp
-+-- scripts/
+¦   +-- Poubelle.webp              # exemple d’asset
++-- scripts/                       # snippets prêts à copier
 ¦   +-- automation-examples.yaml
-¦   +-- 4 Personnage cote a cote.txt
-¦   +-- Alexa Annonce.txt
-¦   +-- Alexa Minuteur.txt
-¦   +-- boite au lettre.txt
-¦   +-- Bouton Simulation présence.txt
-¦   +-- Colonne Lumière avec swipe.txt
-¦   +-- Lave vaisselle.txt
-¦   +-- Lumières.txt
-¦   +-- Meteo animé V2.txt
-¦   +-- Média PLAYER.txt
-¦   +-- Météo.txt
-¦   +-- poubelle.txt
-¦   +-- PRISE ANIMATION.txt
-¦   +-- Script APPLE TV Télécommande.txt
-¦   +-- Script cinema.txt
-¦   +-- Script Conso.txt
-¦   +-- Script COURSES.txt
-¦   +-- Script emploi du temps.txt
-¦   +-- Script Extérieur FREEBOX.txt
-¦   +-- Script MESSAGE ENFANTS.txt
-¦   +-- TEMPO DESIGN.txt
-¦   +-- Theme PS5 LECTURE EN COURS.txt
-¦   +-- Thème Xbox.txt
-¦   +-- TUTO SONNETTE PLEIN ECRAN.txt
-¦   +-- Tuto Wifi avatar.txt
-+-- themes/                # placez ici vos thèmes (.yaml)
+¦   +-- *.txt                      # autres scripts/cartes (ouvrir et copier le YAML)
++-- themes/                        # vos thèmes Home Assistant (.yaml)
++-- .gitignore
++-- LICENSE                        # MIT
++-- README.md
 ```
 
-## Utilisation rapide
-1) Copier le dépôt dans `config/` de Home Assistant.
-2) Pour chaque snippet `.txt`, ouvrez-le et copiez le YAML dans l’éditeur Home Assistant (Automations/Scènes/Scripts) ou enregistrez-le sous `.yaml` dans `scripts/`.
-3) Ajoutez vos dashboards dans `dashboards/` puis référencez-les dans `configuration.yaml` (ex. `dashboard: !include dashboards/main.yaml`).
-4) Déposez vos thèmes dans `themes/` et activez-les via Profil > Thème.
-5) Placez vos visuels (icônes, captures) dans `images/` et mettez à jour les chemins dans vos vues.
+## Démarrage rapide
+1) Copiez ce dépôt dans `config/` de votre instance Home Assistant.
+2) Ouvrez les fichiers `.txt` de `scripts/`, copiez le YAML dans l’éditeur HA (Automations / Scènes / Scripts) ou enregistrez-les sous `.yaml` dans `scripts/`.
+3) Ajoutez vos dashboards dans `dashboards/` puis référencez-les dans `configuration.yaml`, par exemple :
+   ```yaml
+   dashboard: !include dashboards/main.yaml
+   ```
+4) Placez vos thèmes dans `themes/` et activez-les via Profil > Thème.
+5) Rangez vos visuels dans `images/` et mettez à jour leurs chemins dans vos vues.
 
-## Notes
-- `custom-cards/instructions.md` contient les prérequis pour certaines cartes Lovelace.
-- Les dashboards et thèmes fournis sont vides par défaut : ajoutez vos propres fichiers.
+## Contribution
+- Issues et PR bienvenues pour corriger ou ajouter des snippets et de la documentation.
+- Avant de soumettre un dashboard ou un thème, supprimez toute référence à des entités privées (`entity_id`) ou à des secrets.
+- Conservez un formatage YAML propre (indentation 2 espaces) et ajoutez un court commentaire si le comportement n’est pas évident.
 
-## Sécurité
+## Sécurité & confidentialité
 - Ne versionnez aucun secret (`secrets.yaml`, tokens, mots de passe).
-- Vérifiez et adaptez les `entity_id` avant d’activer un script.
+- Adaptez systématiquement les `entity_id` à votre installation avant d’activer un script.
+- Les snippets sont fournis “as is” : testez dans un environnement contrôlé avant production.
+
+## Licence
+MIT – voir `LICENSE`.
