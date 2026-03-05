@@ -1,6 +1,6 @@
 # TechEnClair – Ressources Home Assistant
 
-![TechEnClair](Logo.webp)
+![TechEnClair](images/Logo.webp)
 
 Kit public de snippets YAML, exemples d’automations et espaces prêts à remplir pour vos dashboards, thèmes et assets. Conçu pour démarrer rapidement sans exposer de secrets.
 
@@ -11,6 +11,7 @@ TechEnClair/
 ¦   +-- instructions.md            # prérequis pour certaines cartes custom
 +-- dashboards/                    # vos dashboards Lovelace (.yaml)
 +-- images/
+¦   +-- Logo.webp                  # logo projet
 ¦   +-- Poubelle.webp              # exemple d’asset
 +-- scripts/                       # snippets prêts à copier
 ¦   +-- automation-examples.yaml
