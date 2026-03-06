@@ -1,6 +1,6 @@
 # TechEnClair – Ressources Home Assistant
 
-![TechEnClair](images/Logo.webp)
+<img src="images/Logo.webp" alt="TechEnClair" width="200"/>
 
 Ce dépôt sert uniquement à **partager les scripts et ressources utilisés par le créateur TechEnClair sur TikTok** pour Home Assistant.
 
