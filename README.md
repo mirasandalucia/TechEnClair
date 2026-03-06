@@ -1,46 +1,34 @@
-# TechEnClair – Ressources Home Assistant
+# TechEnClair â€“ Ressources Home Assistant
 
 ![TechEnClair](images/Logo.webp)
 
-Kit public de snippets YAML, exemples d’automations et espaces prêts à remplir pour vos dashboards, thèmes et assets. Conçu pour démarrer rapidement sans exposer de secrets.
+Ce dÃ©pÃ´t sert uniquement Ã  **partager les scripts et ressources utilisÃ©s par le crÃ©ateur TechEnClair sur TikTok** pour Home Assistant.
 
-## Contenu du dépôt
-```
-TechEnClair/
-+-- custom-cards/
-¦   +-- instructions.md            # prérequis pour certaines cartes custom
-+-- dashboards/                    # vos dashboards Lovelace (.yaml)
-+-- images/
-¦   +-- Logo.webp                  # logo projet
-¦   +-- Poubelle.webp              # exemple d’asset
-+-- scripts/                       # snippets prêts à copier
-¦   +-- automation-examples.yaml
-¦   +-- *.txt                      # autres scripts/cartes (ouvrir et copier le YAML)
-+-- themes/                        # vos thèmes Home Assistant (.yaml)
-+-- .gitignore
-+-- LICENSE                        # MIT
-+-- README.md
-```
+Les fichiers prÃ©sents ici permettent de **rÃ©cupÃ©rer facilement les scripts et exemples montrÃ©s dans les vidÃ©os**, afin de les tester ou les adapter Ã  votre propre installation.
 
-## Démarrage rapide
-1) Copiez ce dépôt dans `config/` de votre instance Home Assistant.
-2) Ouvrez les fichiers `.txt` de `scripts/`, copiez le YAML dans l’éditeur HA (Automations / Scènes / Scripts) ou enregistrez-les sous `.yaml` dans `scripts/`.
-3) Ajoutez vos dashboards dans `dashboards/` puis référencez-les dans `configuration.yaml`, par exemple :
-   ```yaml
-   dashboard: !include dashboards/main.yaml
-   ```
-4) Placez vos thèmes dans `themes/` et activez-les via Profil > Thème.
-5) Rangez vos visuels dans `images/` et mettez à jour leurs chemins dans vos vues.
+## TikTok
 
-## Contribution
-- Issues et PR bienvenues pour corriger ou ajouter des snippets et de la documentation.
-- Avant de soumettre un dashboard ou un thème, supprimez toute référence à des entités privées (`entity_id`) ou à des secrets.
-- Conservez un formatage YAML propre (indentation 2 espaces) et ajoutez un court commentaire si le comportement n’est pas évident.
+Retrouvez les vidÃ©os et dÃ©monstrations des scripts ici :  
 
-## Sécurité & confidentialité
-- Ne versionnez aucun secret (`secrets.yaml`, tokens, mots de passe).
-- Adaptez systématiquement les `entity_id` à votre installation avant d’activer un script.
-- Les snippets sont fournis “as is” : testez dans un environnement contrôlé avant production.
+TikTok : https://www.tiktok.com/@geekfamily45 :contentReference[oaicite:0]{index=0}
+
+## Utilisation
+
+- Parcourez les fichiers disponibles dans le dÃ©pÃ´t.
+- Copiez le contenu des scripts.
+- Adaptez-les Ã  votre configuration Home Assistant (notamment les `entity_id`).
+
+## Questions ou aide
+
+Si vous avez des questions ou besoin dâ€™aide pour utiliser un script, vous pouvez rejoindre le **serveur Discord de la communautÃ©** :
+
+Discord : https://discord.gg/BzD2dwRjw2
+
+## SÃ©curitÃ©
+
+Aucun mot de passe, token ou secret Home Assistant nâ€™est stockÃ© dans ce dÃ©pÃ´t.  
+VÃ©rifiez toujours les scripts et adaptez-les Ã  votre installation avant utilisation.
 
 ## Licence
-MIT – voir `LICENSE`.
+
+MIT â€“ voir `LICENSE`.
