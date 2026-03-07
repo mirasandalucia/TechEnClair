@@ -1,0 +1,83 @@
+carte Dashbord V2 :
+
+
+------------------
+
+type: entities
+title: ⛽ Carburants
+show_header_toggle: false
+state_color: true
+entities:
+  - type: section
+    label: TotalEnergies
+  - entity: sensor.station_relais_solterre_la_commodite_gazole
+    name: Gazole
+    secondary_info: last-updated
+  - type: section
+    label: Géant Casino
+  - entity: sensor.station_geant_casino_gazole
+    name: Gazole
+    secondary_info: last-updated
+  - type: section
+    label: Leclerc Amilly
+  - entity: sensor.station_adis_gazole
+    name: Gazole
+    image: >-
+      https://cdn-1.webcatalog.io/catalog/mon-e-leclerc/mon-e-leclerc-icon-filled-256.webp?v=1768783498405
+    secondary_info: last-updated
+card_mod:
+  style: |
+    ha-card {
+      /* Style Jarvis */
+      background: linear-gradient(135deg, #1f2937, #4b5563) !important;
+      color: #f9fafb !important;
+      border-radius: 15px !important;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.3s ease-in-out;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Icône de fond : Pompe à essence */
+    ha-card::after {
+      content: "⛽";
+      position: absolute;
+      right: 5px;
+      bottom: -10px;
+      font-size: 8rem;
+      opacity: 0.08;
+      pointer-events: none;
+      transform: rotate(-10deg);
+      filter: grayscale(1) brightness(1.5);
+    }
+
+    ha-card:hover {
+      transform: scale(1.01);
+      background: linear-gradient(135deg, #283046, #667085) !important;
+    }
+
+    .card-header {
+      color: #f9fafb !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section {
+      color: #60a5fa !important;
+      font-weight: bold !important;
+      position: relative;
+      z-index: 1;
+    }
+
+    :host {
+      --paper-item-icon-color: #f9fafb;
+      --secondary-text-color: #9ca3af;
+      position: relative;
+      z-index: 1;
+    }
+
+----------------------------------------------------------------
