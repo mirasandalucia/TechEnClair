@@ -1,0 +1,69 @@
+Crée DEUX automatisation avec ses deux codes ! Bien remplacé par vos entity :
+
+-----------------------------
+
+1. L'automatisation du Rapport (À 23h00)
+YAML
+alias: "Rapport Nocturne Grok Définitif"
+description: "Vérifie les pièces et lumières spécifiques avec rapport Grok"
+trigger:
+  - platform: time
+    at: "23:00:00"
+action:
+  - service: conversation.process
+    data:
+      agent_id: conversation.grok
+      text: >
+        Analyse cet état précis des lumières pour mon rapport de nuit :
+
+        - Lumières spécifiques :
+          * Salon (Global) : {{ states('light.salon') }}
+          * Bandeau Vitre : {{ states('light.bandeau_vitre') }}
+          * TV : {{ states('light.tv') }}
+          * Bureau : {{ states('light.bureau_2') }}
+          * Bandeau LSC : {{ states('light.lsc_smart_led_strip_rgbic_cctic_5m') }}
+
+        - Zones :
+          * Cuisine : {{ area_entities('Cuisine') | select('match', 'light') | expand | selectattr('state', 'eq', 'on') | map(attribute='name') | join(', ') | default('Éteint', true) }}
+          * Escalier : {{ area_entities('Escalier') | select('match', 'light') | expand | selectattr('state', 'eq', 'on') | map(attribute='name') | join(', ') | default('Éteint', true) }}
+
+        Dis-moi de façon courte et sympa s'il y a des oublis (ceux qui sont sur 'on'). Si tout est 'off' ou 'Éteint', dis-moi juste que tout est OK.
+    response_variable: grok_report_result
+
+  - service: notify.mobile_app_sm_s921b
+    data: &notif_config
+      title: "Le Rapport du Veilleur"
+      message: "{{ grok_report_result.response.speech.plain.speech }}"
+      data:
+        actions:
+          - action: "ETEINDRE_LUMIERES_UNIQUEMENT"
+            title: "Tout éteindre"
+
+  - service: notify.mobile_app_sm_julie
+    data: *notif_config
+
+
+------------------------------------------------------------------------------------------------------------
+
+2. L'automatisation de l'Action (Le bouton "Tout éteindre")
+YAML
+alias: "Action : Exécution Extinction Totale"
+description: "Éteint les zones et les lumières spécifiques au clic sur le bouton"
+trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: "ETEINDRE_LUMIERES_UNIQUEMENT"
+action:
+  - service: light.turn_off
+    target:
+      area_id:
+        - salon
+        - cuisine
+        - escalier
+      entity_id:
+        - light.salon
+        - light.bandeau_vitre
+        - light.tv
+        - light.bureau_2
+        - light.lsc_smart_led_strip_rgbic_cctic_5m
