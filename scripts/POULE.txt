@@ -1,0 +1,119 @@
+Code du Dashbord :
+
+type: grid
+columns: 1
+square: false
+cards:
+  - type: button
+    name: "Dernier ramassage des œufs :"
+    show_name: true
+    show_state: true
+    show_icon: false
+    entity: input_select.ramassage_des_oeufs
+    tap_action:
+      action: more-info
+    card_mod:
+      style: |
+        ha-card {
+          width: 100%;
+          height: 70px !important;
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          padding-left: 15px !important;
+          gap: 15px;
+          border-radius: 15px;
+          background: linear-gradient(135deg, #1f2937, #4b5563);
+          color: #f9fafb;
+          font-weight: 700;
+          font-size: 16px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          transition: all 0.3s ease-in-out;
+          overflow: hidden;
+          position: relative;
+        }
+
+        /* Ta poule avec animation de picotage */
+        ha-card::before {
+          content: "";
+          display: block;
+          width: 45px;
+          height: 45px;
+          background-image: url("/api/image/serve/4f63c2c82a78394d7c07bb7907194f08/original?authSig=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2Y2U4ZTdhMDRmOWE0NDRkODYxNjNlZmZmODI4YzhkOSIsInBhdGgiOiIvYXBpL2ltYWdlL3NlcnZlLzRmNjNjMmM4MmE3ODM5NGQ3YzA3YmI3OTA3MTk0ZjA4L29yaWdpbmFsIiwicGFyYW1zIjpbXSwiaWF0IjoxNzcyNjUxNTcxLCJleHAiOjE3NzI3Mzc5NzF9.byVidY0j5B7vOlveOgktek_CexiL6zQkfwV-vbjEI0A");
+          background-size: cover;
+          background-position: center;
+          border-radius: 50%;
+          border: 2px solid #FF9800;
+          flex-shrink: 0;
+          z-index: 2;
+          animation: henBob 3s ease-in-out infinite;
+        }
+
+        @keyframes henBob {
+          0%, 100% { transform: scale(1) translateY(0); }
+          50% { transform: scale(1.05) translateY(-2px); }
+        }
+
+        /* L'œuf en fond avec animation d'oscillation */
+        ha-card::after {
+          content: "🥚";
+          position: absolute;
+          right: -5px;
+          bottom: -15px;
+          font-size: 5rem;
+          opacity: 0.12;
+          filter: grayscale(1) brightness(1.5);
+          transform: rotate(-10deg);
+          pointer-events: none;
+          animation: eggWobble 4s ease-in-out infinite;
+          transform-origin: center bottom;
+        }
+
+        @keyframes eggWobble {
+          0%, 100% { transform: rotate(-10deg); }
+          50% { transform: rotate(5deg); }
+        }
+
+        /* Style du texte */
+        .name, .state {
+          z-index: 1;
+        }
+
+        .state {
+          color: #FF9800 !important;
+          margin-left: -5px !important;
+          /* Petite lueur sur l'état pour rappeler l'oeuf frais */
+          text-shadow: 0 0 5px rgba(255, 152, 0, 0.3);
+        }
+
+        ha-card:hover {
+          transform: scale(1.01);
+          background: linear-gradient(135deg, #283046, #667085);
+          cursor: pointer;
+        }
+------------------------------------------------------------------------------------------------
+
+Ensuite crée une liste déroulante dans Appareil & service puis Entrées !!!!!!!!!!!
+
+ID devra ressembler à input_select.ramassage_des_oeufs ! 
+
+je vous donne le code a mettre sinon dans : trois petit point -> Détail -> Mode Yaml en haut a droite et coller :
+
+state:
+  translated: Mercredi
+  raw: Mercredi
+  last_changed: "2026-03-12T09:18:53.259Z"
+  last_updated: "2026-03-12T09:18:53.259Z"
+attributes:
+  options:
+    - Lundi
+    - Mardi
+    - Mercredi
+    - Jeudi
+    - Vendredi
+    - Samedi
+    - Dimanche
+  editable: true
+  icon: mdi:calendar
+  friendly_name: Ramassage des œufs
