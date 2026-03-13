@@ -1,0 +1,74 @@
+alias: Détection Cuisine
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.detecteur_1
+    to:
+      - "on"
+    from:
+      - "off"
+    id: arrivee
+  - trigger: state
+    entity_id:
+      - binary_sensor.detecteur_1
+    to:
+      - "off"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+    id: depart
+conditions:
+  - condition: time
+    before: "07:20:00"
+    after: "18:30:00"
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+    enabled: true
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - arrivee
+        sequence:
+          - action: light.turn_on
+            metadata: {}
+            target:
+              entity_id: light.lsc_smart_led_strip_rgbic_cctic_5m
+            data: {}
+          - action: light.turn_on
+            metadata: {}
+            target:
+              entity_id: light.cuisine
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - depart
+        sequence:
+          - action: light.turn_off
+            metadata: {}
+            target:
+              entity_id: light.lsc_smart_led_strip_rgbic_cctic_5m
+            data: {}
+          - action: light.turn_off
+            metadata: {}
+            target:
+              entity_id: light.cuisine
+            data: {}
+mode: single
+
+
+-------------------------------------------------------------
+
+Script Automatisation pour transformer un détecteur de mouvement en capteur de présence !
+
+ 
