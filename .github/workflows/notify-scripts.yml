@@ -19,7 +19,22 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: scripts/**
-          since_last_remote_commit: true
+
+      - name: Debug - List Added Files
+        run: |
+          echo "All changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "Added files: ${{ steps.changed-files.outputs.added_files }}"
+          echo "Modified files: ${{ steps.changed-files.outputs.modified_files }}"
+
+      - name: Check Secret availability
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "::error::Le secret DISCORD_WEBHOOK est vide ou n'est pas configuré dans les paramètres du dépôt !"
+            exit 1
+          fi
+          echo "Le secret est bien présent."
 
       - name: Send Discord Notification
         if: steps.changed-files.outputs.added_files != ''
@@ -31,10 +46,11 @@ jobs:
           
           # Prepare the file list for the embed
           FILES="${{ steps.changed-files.outputs.added_files }}"
-          FILES_FORMATTED=$(echo "$FILES" | sed 's/ /\\n- /g' | sed 's/^/- /')
+          # Safely escape filenames for JSON and format list
+          FILES_FORMATTED=$(echo "$FILES" | tr ' ' '\n' | sed 's/^/- /' | sed ':a;N;$!ba;s/\n/\\n/g')
           
-          # Construct the JSON payload
-          PAYLOAD=$(cat <<EOF
+          # Construct the JSON payload using a temporary file for safety
+          cat <<EOF > payload.json
           {
             "embeds": [
               {
@@ -53,9 +69,16 @@ jobs:
             ]
           }
           EOF
-          )
           
-          # Send to Discord (silent mode to avoid leaking headers in logs)
-          curl -s -H "Content-Type: application/json" \
-               -d "$PAYLOAD" \
-               "$DISCORD_WEBHOOK"
+          # Send to Discord (silent mode + show error if fails)
+          RESPONSE=$(curl -s -w "%{http_code}" -X POST -H "Content-Type: application/json" \
+               -d @payload.json \
+               "$DISCORD_WEBHOOK")
+          
+          HTTP_CODE=${RESPONSE: -3}
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::Discord API renvoyé une erreur (Code: $HTTP_CODE)"
+            echo "Réponse: ${RESPONSE%???}"
+            exit 1
+          fi
+          echo "Notification envoyée avec succès (Code: $HTTP_CODE)."
