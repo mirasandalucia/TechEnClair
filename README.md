@@ -1,34 +1,54 @@
-# TechEnClair – Ressources Home Assistant
+<div align="center">
+  <img src="images/Logo.webp" alt="TechEnClair Logo" width="180" />
 
-<img src="images/Logo.webp" alt="TechEnClair" width="200"/>
+  # 🚀 TechEnClair – Ressources Home Assistant
 
-Ce dépôt sert uniquement à **partager les scripts et ressources utilisés par le créateur TechEnClair sur TikTok** pour Home Assistant.
+  [![TikTok](https://img.shields.io/badge/TikTok-@techenclair-EE1D52?style=for-the-badge&logo=tiktok&logoColor=white)](https://www.tiktok.com/@techenclair)
+  [![Discord](https://img.shields.io/badge/Discord-Rejoindre-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/BzD2dwRjw2)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-Les fichiers présents ici permettent de **récupérer facilement les scripts et exemples montrés dans les vidéos**, afin de les tester ou les adapter à votre propre installation.
+  **Partage des scripts et ressources Home Assistant présentés sur TikTok.**
 
-## TikTok
+  ---
+</div>
 
-Retrouvez les vidéos et démonstrations des scripts ici :
+## 📖 À propos
 
-TikTok : https://www.tiktok.com/@techenclair
+Ce dépôt regroupe l'ensemble des configurations, scripts et automatisations utilisés dans les vidéos **TechEnClair** sur TikTok. L'objectif est de vous fournir une base solide pour tester et adapter ces solutions à votre propre installation Home Assistant.
 
-## Utilisation
+## 📂 Structure du projet
 
-- Parcourez les fichiers disponibles dans le dépôt.
-- Copiez le contenu des scripts.
-- Adaptez-les à votre configuration Home Assistant (notamment les `entity_id`).
+| Dossier | Description |
+| :--- | :--- |
+| `scripts/` | 📜 Codes source des scripts et automatisations. |
+| `dashboards/` | 📊 Exemples de cartes et configurations d'interface. |
+| `themes/` | 🎨 Thèmes pour personnaliser votre Home Assistant. |
+| `custom-cards/` | 🧩 Ressources pour les cartes personnalisées. |
 
-## Questions ou aide
+## 🛠️ Utilisation
 
-Si vous avez des questions ou besoin d’aide pour utiliser un script, vous pouvez rejoindre le **serveur Discord de la communauté** :
+1. **Parcourez** les fichiers pour trouver le script qui vous intéresse.
+2. **Copiez** le contenu du fichier.
+3. **Adaptez** les variables (comme les `entity_id`) à votre installation.
+4. **Collez** le code dans l'éditeur YAML de votre Home Assistant.
 
-Discord : https://discord.gg/BzD2dwRjw2
+> [!TIP]
+> Si vous débutez, consultez les dossiers `scripts/` pour les automatisations les plus populaires.
 
-## Sécurité
+## 💬 Communauté & Aide
 
-Aucun mot de passe, token ou secret Home Assistant n’est stocké dans ce dépôt.  
-Vérifiez toujours les scripts et adaptez-les à votre installation avant utilisation.
+Besoin d'un coup de main ou envie de partager vos propres créations ? Rejoignez-nous !
 
-## Licence
+- 🎬 **TikTok** : [Suivre TechEnClair](https://www.tiktok.com/@techenclair) pour les dernières démos.
+- 💬 **Discord** : [Rejoindre le serveur](https://discord.gg/BzD2dwRjw2) pour poser vos questions et échanger avec d'autres passionnés.
 
-MIT – voir `LICENSE`.
+## 🛡️ Sécurité
+
+- Aucun mot de passe, token ou secret n’est stocké ici.
+- **Rappel** : Vérifiez toujours le contenu d'un script avant de l'exécuter. Vous êtes responsable de votre installation.
+
+---
+
+<div align="center">
+  <sub>Fait avec ❤️ par TechEnClair</sub>
+</div>
