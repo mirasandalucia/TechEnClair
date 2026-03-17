@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'scripts/**'
+  workflow_dispatch:
 
 jobs:
   notify:
@@ -52,6 +53,7 @@ jobs:
           # Construct the JSON payload using a temporary file for safety
           cat <<EOF > payload.json
           {
+            "thread_name": "🚀 Nouveaux scripts : $(date +'%d/%m %H:%M')",
             "embeds": [
               {
                 "title": "🚀 Nouveau script ajouté !",
