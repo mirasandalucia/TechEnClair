@@ -43,32 +43,44 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           # Branded color (light blue)
           COLOR=3447003 
           
-          # Prepare the file list with links
+          # Prepare the file list and extract the first script name for the title
           ANY_CHANGED="${{ steps.changed-files.outputs.all_changed_files }}"
           FILES_FORMATTED=""
+          FIRST_FILE=""
+          
           for file in $ANY_CHANGED; do
-            URL="https://github.com/$REPO/blob/$SHA/$file"
-            FILES_FORMATTED="${FILES_FORMATTED}- [$file]($URL)\\n"
+            # Extract basename for the thread title if it's in scripts/
+            if [[ $file == scripts/* ]] && [ -z "$FIRST_FILE" ]; then
+              FIRST_FILE=$(basename "$file")
+            fi
+            
+            FILE_URL="https://github.com/$REPO/blob/$SHA/$file"
+            FILES_FORMATTED="${FILES_FORMATTED}- [$file]($FILE_URL)\\n"
           done
+          
+          # Fallback title if no script matches
+          if [ -z "$FIRST_FILE" ]; then
+            FIRST_FILE=$(echo "$COMMIT_MSG" | head -n 1)
+          fi
+
+          COMMIT_URL="https://github.com/$REPO/commit/$SHA"
+          MSG_TITLE=$(echo "$COMMIT_MSG" | head -n 1)
           
           # Construct the JSON payload
           cat <<EOF > payload.json
           {
-            "thread_name": "🚀 Mise à jour scripts : $(date +'%d/%m %H:%M')",
-            "content": "Une mise à jour a été effectuée dans le dossier \`scripts/\`",
+            "thread_name": "✨ $FIRST_FILE",
+            "content": "✨ **Hey ! Un nouveau script vient d’arriver !**\n\n🎯 **Nom :** $MSG_TITLE\n🔗 **Check-le ici :** $COMMIT_URL\n\n💡 Amuse-toi bien avec !",
             "embeds": [
               {
-                "title": "📂 Activité sur les scripts",
-                "description": "**Fichiers impactés :**\n\n$FILES_FORMATTED",
+                "title": "📂 Fichiers impactés",
+                "description": "$FILES_FORMATTED",
                 "color": $COLOR,
-                "author": {
-                  "name": "${{ github.actor }}",
-                  "icon_url": "https://github.com/${{ github.actor }}.png"
-                },
                 "footer": {
                   "text": "TechEnClair - GitHub Actions"
                 },
