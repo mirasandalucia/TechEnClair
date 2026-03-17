@@ -41,13 +41,19 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
         run: |
           # Branded color (light blue)
           COLOR=3447003 
           
-          # Prepare the file list
+          # Prepare the file list with links
           ANY_CHANGED="${{ steps.changed-files.outputs.all_changed_files }}"
-          FILES_FORMATTED=$(echo "$ANY_CHANGED" | tr ' ' '\n' | sed 's/^/- /' | sed ':a;N;$!ba;s/\n/\\n/g')
+          FILES_FORMATTED=""
+          for file in $ANY_CHANGED; do
+            URL="https://github.com/$REPO/blob/$SHA/$file"
+            FILES_FORMATTED="${FILES_FORMATTED}- [$file]($URL)\\n"
+          done
           
           # Construct the JSON payload
           cat <<EOF > payload.json
@@ -72,7 +78,7 @@ jobs:
           }
           EOF
           
-          # Debug: View payload (masking potentially sensitive info if any, though here it's public)
+          # Debug: View payload
           echo "--- PAYLOAD DEBUG ---"
           cat payload.json
           echo -e "\n---------------------"
