@@ -1,0 +1,61 @@
+name: Notify Discord on New Script
+
+on:
+  push:
+    paths:
+      - 'scripts/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necessary for tj-actions/changed-files to compare
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: scripts/**
+          since_last_remote_commit: true
+
+      - name: Send Discord Notification
+        if: steps.changed-files.outputs.added_files != ''
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          # Branded color (light blue)
+          COLOR=3447003 
+          
+          # Prepare the file list for the embed
+          FILES="${{ steps.changed-files.outputs.added_files }}"
+          FILES_FORMATTED=$(echo "$FILES" | sed 's/ /\\n- /g' | sed 's/^/- /')
+          
+          # Construct the JSON payload
+          PAYLOAD=$(cat <<EOF
+          {
+            "embeds": [
+              {
+                "title": "🚀 Nouveau script ajouté !",
+                "description": "Les fichiers suivants ont été ajoutés au dossier \`scripts/\` :\n\n$FILES_FORMATTED",
+                "color": $COLOR,
+                "author": {
+                  "name": "${{ github.actor }}",
+                  "icon_url": "https://github.com/${{ github.actor }}.png"
+                },
+                "footer": {
+                  "text": "TechEnClair - GitHub Actions"
+                },
+                "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              }
+            ]
+          }
+          EOF
+          )
+          
+          # Send to Discord (silent mode to avoid leaking headers in logs)
+          curl -s -H "Content-Type: application/json" \
+               -d "$PAYLOAD" \
+               "$DISCORD_WEBHOOK"
