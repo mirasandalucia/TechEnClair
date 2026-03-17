@@ -38,26 +38,26 @@ jobs:
           echo "Le secret est bien présent."
 
       - name: Send Discord Notification
-        if: steps.changed-files.outputs.added_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           # Branded color (light blue)
           COLOR=3447003 
           
-          # Prepare the file list for the embed
-          FILES="${{ steps.changed-files.outputs.added_files }}"
-          # Safely escape filenames for JSON and format list
-          FILES_FORMATTED=$(echo "$FILES" | tr ' ' '\n' | sed 's/^/- /' | sed ':a;N;$!ba;s/\n/\\n/g')
+          # Prepare the file list
+          ANY_CHANGED="${{ steps.changed-files.outputs.all_changed_files }}"
+          FILES_FORMATTED=$(echo "$ANY_CHANGED" | tr ' ' '\n' | sed 's/^/- /' | sed ':a;N;$!ba;s/\n/\\n/g')
           
-          # Construct the JSON payload using a temporary file for safety
+          # Construct the JSON payload
           cat <<EOF > payload.json
           {
-            "thread_name": "🚀 Nouveaux scripts : $(date +'%d/%m %H:%M')",
+            "thread_name": "🚀 Mise à jour scripts : $(date +'%d/%m %H:%M')",
+            "content": "Une mise à jour a été effectuée dans le dossier \`scripts/\`",
             "embeds": [
               {
-                "title": "🚀 Nouveau script ajouté !",
-                "description": "Les fichiers suivants ont été ajoutés au dossier \`scripts/\` :\n\n$FILES_FORMATTED",
+                "title": "📂 Activité sur les scripts",
+                "description": "**Fichiers impactés :**\n\n$FILES_FORMATTED",
                 "color": $COLOR,
                 "author": {
                   "name": "${{ github.actor }}",
@@ -72,15 +72,21 @@ jobs:
           }
           EOF
           
-          # Send to Discord (silent mode + show error if fails)
-          RESPONSE=$(curl -s -w "%{http_code}" -X POST -H "Content-Type: application/json" \
+          # Debug: View payload (masking potentially sensitive info if any, though here it's public)
+          echo "--- PAYLOAD DEBUG ---"
+          cat payload.json
+          echo -e "\n---------------------"
+          
+          # Send to Discord
+          RESPONSE=$(curl -s -D - -w "\n%{http_code}" -X POST -H "Content-Type: application/json" \
                -d @payload.json \
                "$DISCORD_WEBHOOK")
           
-          HTTP_CODE=${RESPONSE: -3}
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
           if [ "$HTTP_CODE" -ge 400 ]; then
             echo "::error::Discord API renvoyé une erreur (Code: $HTTP_CODE)"
-            echo "Réponse: ${RESPONSE%???}"
+            echo "Réponse complète :"
+            echo "$RESPONSE"
             exit 1
           fi
           echo "Notification envoyée avec succès (Code: $HTTP_CODE)."
