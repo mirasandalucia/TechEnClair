@@ -1,0 +1,146 @@
+Avoir installé : Battery State Card sur Hacs
+
+
+type: custom:battery-state-card
+title: 🔋 État des Équipements
+sort_by_level: asc
+layout: grid
+collapse: 3
+filter:
+  include: []
+  exclude:
+    - entity_id: "*"
+bulk_update:
+  include: []
+color_thresholds:
+  - value: 20
+    color: "#e74c3c"
+  - value: 50
+    color: "#f39c12"
+  - value: 100
+    color: "#2ecc71"
+entities:
+  - entity: sensor.sm_s921b_battery_level
+    name: Samsung S24
+    icon: mdi:cellphone
+    charging_state:
+      attribute:
+        name: battery_status
+        value: charging
+  - entity: sensor.sm_julie_battery_level
+    name: SM-Julie
+    icon: mdi:cellphone
+    charging_state:
+      attribute:
+        name: battery_status
+        value: charging
+  - entity: sensor.bob_batterie
+    name: Aspirateur BOB
+    icon: mdi:robot-vacuum
+  - entity: sensor.honor_battery_level
+    name: Tablette Honor
+    icon: mdi:cellphone
+    charging_state:
+      attribute:
+        name: battery_status
+        value: charging
+  - entity: sensor.dyad_air_2024_batterie
+    name: Aspirateur DYAD AIR
+    icon: mdi:vacuum
+  - entity: sensor.maison_interrupteur_batterie
+    name: Télécommande HUE
+    icon: mdi:remote
+  - entity: sensor.samsung_m2020_series_black_toner_s_n_crum_17091625519
+    name: Toner Imprimante
+    icon: mdi:printer-3d-nozzle
+  - entity: sensor.galaxy_watch6_classic_d4he_battery_level
+    name: Montre Papa
+    icon: mdi:watch-variant
+    charging_state:
+      attribute:
+        name: battery_status
+        value: charging
+  - entity: sensor.galaxy_watch8_fbxh_battery_level
+    name: Montre Maman
+    icon: mdi:watch-variant
+    charging_state:
+      attribute:
+        name: battery_status
+        value: charging
+  - entity: sensor.detecterur_batterie
+    name: Boîte aux lettres
+    icon: mdi:mailbox
+  - entity: sensor.detecteur_1_batterie
+    name: Détecteur Cuisine
+    icon: mdi:motion-sensor
+  - entity: sensor.detecteur_2_batterie
+    name: Détecteur Escalier
+    icon: mdi:motion-sensor
+  - entity: sensor.arriere_cour_battery_percentage
+    name: Arrière Cour
+    icon: mdi:shield-check
+  - entity: sensor.temp_batterie
+    name: Batterie Capteur Bureau
+    icon: mdi:battery-bluetooth
+card_mod:
+  style: |
+    ha-card {
+      background: linear-gradient(135deg, #1f2937, #4b5563) !important;
+      color: #f9fafb !important;
+      border-radius: 15px !important;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.3s ease-in-out;
+      padding: 8px !important;
+      overflow: hidden;
+      position: relative;
+    }
+
+    ha-card::after {
+      content: "🔋";
+      position: absolute;
+      right: 10px;
+      bottom: -15px;
+      font-size: 8rem;
+      opacity: 0.1;
+      pointer-events: none;
+      transform: rotate(-10deg);
+      filter: grayscale(1) brightness(1.5);
+      animation: batteryCharging 6s linear infinite;
+    }
+
+    @keyframes batteryCharging {
+      0% { clip-path: inset(100% 0 0 0); }
+      80% { clip-path: inset(0% 0 0 0); }
+      100% { clip-path: inset(0% 0 0 0); opacity: 0.15; }
+    }
+
+    ha-card:hover {
+      transform: scale(1.005);
+      background: linear-gradient(135deg, #283046, #667085) !important;
+    }
+
+    .card-header {
+      color: #f9fafb !important;
+      font-size: 18px !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .entity-row.charging battery-state-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    :host {
+      --paper-item-icon-color: #f9fafb;
+      --secondary-text-color: #9ca3af;
+    }
