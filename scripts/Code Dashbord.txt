@@ -1,0 +1,16 @@
+Voici le code que j'ai dans mon thème : Modifier avec le crayon et ajouter ce code en bas :
+
+
+layout:
+  grid-template-columns: repeat(3, 1fr)
+  grid-gap: 12px
+  margin: 10px
+view_layout:
+  max_width: 100%
+card_mod:
+  style: |
+    :host {
+      --ha-card-border-radius: 16px;      /* Arrondi des cartes plus moderne */
+      --grid-card-gap: 12px;             /* Espace entre les cartes */
+      --ha-card-border-width: 0px;       /* Supprime les bordures pour un look épuré */
+    }
