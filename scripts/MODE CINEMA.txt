@@ -1,0 +1,155 @@
+Crée une entrée dans Appareils & servide et l'appeler Mode Invité !
+
+Ensuite voici le code de l'automatisation :
+
+----------------------------------------------------
+
+
+alias: Mode Cinéma Séjour
+description: Gère les lumières selon Plex, sauf si le mode invité est activé
+triggers:
+  - entity_id: media_player.sejour
+    to: playing
+    id: film_lance
+    trigger: state
+  - entity_id: media_player.sejour
+    to: paused
+    id: film_pause
+    trigger: state
+  - entity_id: media_player.sejour
+    to:
+      - idle
+      - "off"
+    id: film_stop
+    trigger: state
+conditions:
+  - condition: state
+    entity_id: input_boolean.mode_invite
+    state: "off"
+  - condition: sun
+    after: sunset
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: film_lance
+        sequence:
+          - target:
+              entity_id: light.salon
+            data:
+              transition: 4
+            action: light.turn_off
+      - conditions:
+          - condition: trigger
+            id: film_pause
+        sequence:
+          - target:
+              entity_id: light.salon
+            data:
+              brightness_pct: 25
+              transition: 2
+            action: light.turn_on
+      - conditions:
+          - condition: trigger
+            id: film_stop
+          # --- AJOUT ICI ---
+          - condition: state
+            entity_id: light.salon
+            state: "off" # On ne rallume que si c'était éteint !
+        sequence:
+          - target:
+              entity_id: light.salon
+            data:
+              brightness_pct: 100
+              transition: 3
+            action: light.turn_on
+
+--------------------------------------------------------------------------------
+
+Voici le code du dashbord :
+
+--------------------------------------------------------------------------------
+
+type: conditional
+conditions:
+  - condition: state
+    entity: sun.sun
+    state: below_horizon
+card:
+  type: custom:mushroom-template-card
+  primary: Mode Cinéma
+  secondary: |
+    {% if is_state('input_boolean.mode_invite', 'on') %}
+      ACTIVÉ (Automatisations en pause)
+    {% else %}
+      Cliquer ici pour le désactiver
+    {% endif %}
+  icon: mdi:account-group
+  entity: input_boolean.mode_invite
+  icon_color: >-
+    {% if is_state('input_boolean.mode_invite', 'on') %}purple{% else
+    %}disabled{% endif %}
+  card_mod:
+    style: |
+      ha-card {
+        background: rgba(128, 0, 128, 0.1) !important;
+        border-radius: 25px !important;
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+        position: relative;
+        /* Animation de bordure pulsante violette */
+        animation: border-pulse-purple 2s infinite;
+      }
+
+      /* Icône fantôme en fond avec animation */
+      ha-card::after {
+        content: "🥂";
+        position: absolute;
+        right: 10px;
+        bottom: -5px;
+        font-size: 3.2rem;
+        opacity: 0.1;
+        pointer-events: none;
+        /* Ajout de l'animation de tintement */
+        animation: clink-glasses 2s infinite;
+        transform-origin: bottom center; /* Point de pivot en bas */
+      }
+
+      /* Définition de l'animation de bordure pulsante violette */
+      @keyframes border-pulse-purple {
+        0% {
+          border: 2px solid rgba(155, 89, 182, 0.4);
+          box-shadow: 0 0 0px rgba(155, 89, 182, 0);
+        }
+        50% {
+          border: 2px solid rgba(155, 89, 182, 1);
+          box-shadow: 0 0 15px rgba(155, 89, 182, 0.4);
+        }
+        100% {
+          border: 2px solid rgba(155, 89, 182, 0.4);
+          box-shadow: 0 0 0px rgba(155, 89, 182, 0);
+        }
+      }
+
+      /* Définition de l'animation de tintement des verres */
+      @keyframes clink-glasses {
+        0%, 100% {
+          transform: rotate(0deg);
+        }
+        40% {
+          transform: rotate(-15deg); /* Incline vers la gauche pour "prendre de l'élan" */
+        }
+        50% {
+          transform: rotate(10deg);  /* Le choc du tintement */
+        }
+        60% {
+          transform: rotate(-5deg);  /* Stabilisation */
+        }
+      }
+
+      .secondary {
+        {% if is_state('input_boolean.mode_invite', 'on') %}
+          color: #9b59b6 !important;
+          font-weight: 700;
+        {% endif %}
+      }
