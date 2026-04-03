@@ -1,317 +1,1179 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechEnClair - Brutalement Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --ha-bg: #040707;
-            --ha-cyan: #22d3ee;
-            --ha-blue: #3a7bd5;
-            --ha-red: #ef4444;
-            --ha-purple: #a855f7;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belly Ink – Studio Premium · Gien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body { 
-            background-color: var(--ha-bg); 
-            color: #e2e8f0; 
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, var(--ha-bg) 80%);
-            background-attachment: fixed;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    :root {
+      --gold:    #C9A84C;
+      --gold-lt: #E2C97E;
+      --yellow:  #F0E040;
+      --dark:    #000000;
+      --dark2:   #000000;
+      --dark3:   #0A0A0A;
+      --light:   #F5F0E8;
+      --grey:    #888880;
+      --white:   #FFFFFF;
+      --font-display: 'Playfair Display', serif;
+      --font-head:    'Bebas Neue', sans-serif;
+      --font-body:    'Montserrat', sans-serif;
+    }
 
-        .glass { 
-            background: rgba(255, 255, 255, 0.02); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            transition: all 0.4s ease; 
-        }
-        
-        .text-neon { 
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(34, 211, 238, 0.3);
-        }
-        .text-neon-cyan { color: var(--ha-cyan); text-shadow: 0 0 15px rgba(34, 211, 238, 0.6); }
+    html { scroll-behavior: smooth; }
 
-        .btn-action { 
-            background: linear-gradient(90deg, var(--ha-cyan) 0%, var(--ha-blue) 100%); 
-            box-shadow: 0 5px 20px rgba(34, 211, 238, 0.4);
-            transition: all 0.3s ease;
-        }
-        .btn-action:hover { box-shadow: 0 8px 25px rgba(34, 211, 238, 0.6); transform: translateY(-3px); }
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-        .code-block {
-            background: #000;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            font-family: 'monospace';
-            border: 1px solid var(--ha-cyan);
-            color: var(--ha-cyan);
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            overflow-x: auto;
-        }
+    a { text-decoration: none; color: inherit; }
 
-        .step-number {
-            background: var(--ha-cyan);
-            color: black;
-            width: 32px;
-            height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-weight: 900;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
+    /* ── NAVBAR ─────────────────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+    #navbar.scrolled {
+      background: rgba(17,16,16,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
 
-        .btn-social { transition: all 0.3s ease; color: #94a3b8; }
-        .btn-social:hover { color: #fff; transform: translateX(5px); }
-        .btn-tiktok:hover { background-color: rgba(0,0,0,0.4); text-shadow: 0 0 10px #ff0050; }
-        .btn-discord:hover { background-color: rgba(88, 101, 242, 0.2); }
-        .btn-github:hover { background-color: rgba(255, 255, 255, 0.05); }
-        .btn-x:hover { background-color: rgba(255, 255, 255, 0.05); }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+    .logo-icon {
+      width: 38px; height: 38px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+    .logo span { color: var(--white); }
+    .logo strong { color: var(--gold); }
 
-        .hidden { display: none; }
-        .active-page { display: block; animation: fadeInPage 0.8s ease; }
-        @keyframes fadeInPage { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .leading-brutal { line-height: 1.1; letter-spacing: -0.02em; }
-    </style>
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    nav a {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--white);
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+
+    .btn-rdv {
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 12px 22px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-rdv:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('fond.png') center center / cover no-repeat;
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+    #hero:hover .hero-bg { transform: scale(1.08); }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(17,16,16,0.55) 0%,
+        rgba(17,16,16,0.35) 40%,
+        rgba(17,16,16,0.65) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      padding: 0 24px;
+      animation: heroFadeIn 1.2s ease both;
+    }
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 30px;
+      padding: 6px 18px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 24px;
+      backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.3);
+    }
+    .hero-badge::before, .hero-badge::after {
+      content: '·';
+      color: var(--gold);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .hero-title .line1 { color: var(--white); display: block; }
+    .hero-title .line2 { color: var(--gold); display: block; font-style: italic; }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 14px 32px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 14px 32px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.55);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+    .hero-scroll svg { width: 16px; opacity: 0.5; }
+
+    /* ── SECTION HELPERS ────────────────────────────────────── */
+    section { padding: 100px 48px; }
+
+    .section-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: inline-block;
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 8px 18px;
+      border-radius: 30px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 48px;
+    }
+    .section-title em { color: var(--gold); font-style: italic; }
+
+    .divider {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.8), transparent);
+      box-shadow: 0 0 10px rgba(201,168,76,0.2);
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────────── */
+    .about-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 80px;
+      align-items: center;
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .about-img-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .about-img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      display: block;
+      border-radius: 16px;
+      /* placeholder gradient when no image */
+      background: linear-gradient(135deg, #1e1e1c 0%, #2a2a28 100%);
+    }
+    .about-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1e1e1c 0%, #2a2a28 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      opacity: 0.2;
+    }
+
+    .about-badge-exp {
+      position: absolute;
+      bottom: -20px;
+      right: 20px;
+      background: rgba(30,30,28,0.95);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 12px;
+      padding: 20px 28px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(201,168,76,0.1);
+    }
+    .about-badge-exp .num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+    }
+    .about-badge-exp .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+    }
+
+    .about-text .tag { margin-bottom: 8px; }
+    .about-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .about-h2 em { color: var(--gold); font-style: normal; }
+    .about-p { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.8; margin-bottom: 16px; }
+
+    .about-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 36px;
+    }
+    .stat .num { font-family: var(--font-display); font-size: 1.5rem; color: var(--gold); font-weight: 700; }
+    .stat .label { font-size: 0.7rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── STYLES ─────────────────────────────────────────────── */
+    #styles {
+      background: var(--dark);
+      text-align: center;
+    }
+    #styles .section-title { margin-bottom: 56px; }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .style-card {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .style-card-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.5s ease;
+    }
+    .style-card:hover .style-card-bg { transform: scale(1.06); }
+
+    .style-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%);
+    }
+
+    .style-card-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 24px;
+      text-align: left;
+    }
+    .style-icon { font-size: 1.2rem; margin-bottom: 8px; display: block; }
+    .style-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .style-desc {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 4px;
+      line-height: 1.5;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .style-card:hover .style-desc { max-height: 60px; }
+    .style-card.active .style-card-overlay {
+      background: linear-gradient(to top, rgba(201,168,76,0.7) 0%, rgba(0,0,0,0.2) 60%);
+    }
+
+    /* ── PORTFOLIO ──────────────────────────────────────────── */
+    #portfolio {
+      background: var(--dark2);
+      text-align: center;
+    }
+    #portfolio .section-title { margin-bottom: 48px; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .portfolio-item {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .portfolio-item:first-child {
+      grid-row: 1 / 3;
+    }
+    .portfolio-img {
+      width: 100%;
+      height: 100%;
+      min-height: 240px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .portfolio-item:hover .portfolio-img { transform: scale(1.05); }
+
+    .portfolio-placeholder {
+      width: 100%;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      transition: transform 0.5s ease;
+    }
+    .portfolio-item:first-child .portfolio-placeholder { min-height: 500px; }
+    .portfolio-item:hover .portfolio-placeholder { transform: scale(1.05); }
+
+    /* placeholder colors to simulate the gallery */
+    .ph-1 { background: linear-gradient(135deg,#1a1a18,#2c2a26); }
+    .ph-2 { background: linear-gradient(135deg,#1c1a14,#2e2c20); }
+    .ph-3 { background: linear-gradient(135deg,#1a1414,#2c1e1e); }
+    .ph-4 { background: linear-gradient(135deg,#1a1a16,#2a2a24); }
+    .ph-5 { background: linear-gradient(135deg,#141818,#1e2222); }
+    .ph-6 { background: linear-gradient(135deg,#161412,#28201a); }
+
+    /* ── TESTIMONIALS ───────────────────────────────────────── */
+    #testimonials {
+      background: var(--dark);
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .testimonials-slider {
+      position: relative;
+      background: var(--dark3);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 4px;
+      padding: 48px 56px;
+      margin-top: 48px;
+    }
+    .quote-icon {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 0.8;
+      position: absolute;
+      top: 28px; left: 36px;
+    }
+
+    .stars { font-size: 1.1rem; color: #F5C518; margin-bottom: 20px; }
+
+    .testimonial-text {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .testimonial-author { font-weight: 700; color: var(--gold); font-size: 0.9rem; }
+
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 28px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, width 0.2s;
+    }
+    .dot.active {
+      background: var(--gold);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* ── INSTAGRAM ──────────────────────────────────────────── */
+    #instagram {
+      background: var(--dark2);
+      text-align: center;
+    }
+    .insta-handle {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+    .insta-handle span { color: var(--gold); font-style: italic; }
+
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .insta-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .insta-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .insta-item:hover .insta-img { transform: scale(1.08); }
+    .insta-ph {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      transition: transform 0.4s ease;
+    }
+    .insta-item:hover .insta-ph { transform: scale(1.08); }
+
+    /* ── CTA ────────────────────────────────────────────────── */
+    #cta {
+      background: var(--dark);
+      text-align: center;
+      padding: 80px 48px;
+    }
+    .cta-box {
+      background: var(--dark3);
+      border: 1px solid rgba(201,168,76,0.15);
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 48px;
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .cta-title em { color: var(--gold); font-style: italic; }
+    .cta-sub { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .btn-cta {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 16px 40px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-cta:hover { background: var(--gold-lt); transform: translateY(-2px); }
+    .btn-cta svg { width: 14px; fill: currentColor; }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: #000000;
+      padding: 64px 64px 32px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .logo { margin-bottom: 16px; font-size: 1.1rem; }
+    .footer-brand p { font-size: 0.8rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 220px; margin-bottom: 20px; }
+
+    .social-links { display: flex; gap: 12px; }
+    .social-links a {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-links a:hover { border-color: var(--gold); color: var(--gold); }
+
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.82rem; color: rgba(255,255,255,0.4); transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    .contact-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      margin-bottom: 14px;
+      font-size: 0.82rem; color: rgba(255,255,255,0.45);
+    }
+    .contact-item span:first-child { flex-shrink: 0; font-size: 0.9rem; }
+
+    .hours-row {
+      display: flex; justify-content: space-between;
+      font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+    .hours-row strong { color: var(--white); }
+    .closed { color: rgba(255,255,255,0.25) !important; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 0.72rem; color: rgba(255,255,255,0.25); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── MODAL ──────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--dark2);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 48px;
+      max-width: 540px;
+      width: 90%;
+      transform: translateY(24px);
+      transition: transform 0.3s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem; margin-bottom: 8px;
+    }
+    .modal h2 em { color: var(--gold); font-style: italic; }
+    .modal p { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 28px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white);
+      padding: 12px 14px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--dark2); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .modal-close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; color: rgba(255,255,255,0.4);
+      font-size: 1.5rem; cursor: pointer; line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal { position: relative; }
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      padding: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: var(--gold-lt); }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      #navbar { padding: 16px 24px; }
+      section { padding: 70px 24px; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+      .styles-grid { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .portfolio-item:first-child { grid-row: auto; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      nav { display: none; }
+    }
+    @media (max-width: 600px) {
+      .styles-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 3rem; }
+      .testimonials-slider { padding: 36px 24px; }
+    }
+  </style>
 </head>
 <body>
 
-    <nav class="flex flex-col md:flex-row justify-between items-center px-6 md:px-10 py-5 md:py-7 border-b border-white border-opacity-5 sticky top-0 z-50 bg-[#040707] bg-opacity-95 backdrop-blur-md gap-4 md:gap-0">
-        <div class="flex items-center gap-3 text-xl md:text-2xl font-black tracking-tight cursor-pointer" onclick="showPage('home')">
-            <i class="mdi mdi-lightning-bolt text-3xl md:text-4xl text-cyan-400"></i> TechEn<span class="text-cyan-400">Clair</span>
-        </div>
-        <div class="flex gap-4 md:gap-10 text-[10px] md:text-xs font-black uppercase tracking-[0.1em] md:tracking-[0.2em] text-gray-500">
-            <button onclick="showPage('home')" class="hover:text-cyan-400 transition-colors">Accueil</button>
-            <button onclick="showPage('guide')" class="hover:text-cyan-400 transition-colors">Le Guide</button>
-            <button onclick="showPage('hacs')" class="hover:text-cyan-400 transition-colors">HACS</button>
-            <button onclick="showPage('dashboard')" class="hover:text-cyan-400 transition-colors">Dashboard</button>
-        </div>
-        <div class="hidden md:block w-10"></div> 
+  <!-- NAVBAR -->
+  <header id="navbar">
+    <div class="logo">
+      <div class="logo-icon">B</div>
+      <span>BELLY</span><strong>INK</strong>
+    </div>
+    <nav>
+      <a href="#hero">Accueil</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
     </nav>
+    <button class="btn-rdv" onclick="openModal()">Rendez-vous</button>
+  </header>
 
-    <main class="flex-1">
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Studio Premium &nbsp;·&nbsp; Gien</div>
+      <h1 class="hero-title">
+        <span class="line1">L'Art</span>
+        <span class="line2">Sur Votre Peau</span>
+      </h1>
+      <p class="hero-sub">Chaque trait raconte une histoire. Chaque œuvre est unique.<br>Bienvenue dans l'univers de Belly Ink.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="openModal()">Prendre Rendez-vous</button>
+        <a href="#portfolio" class="btn-outline">Voir le Portfolio</a>
+        <a href="https://www.instagram.com/belly.ink/" target="_blank" rel="noopener noreferrer" class="btn-outline">Instagram</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <svg viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M8 4v12M4 13l4 4 4-4"/>
+      </svg>
+    </div>
+  </section>
 
-        <section id="home" class="page active-page flex flex-col items-center justify-center text-center pt-24 md:pt-40 pb-20 md:pb-32 px-6 md:px-10">
-            <span class="px-4 py-2 rounded-full border border-cyan-500 border-opacity-30 text-cyan-400 text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] mb-8 md:mb-10 inline-block bg-cyan-900 bg-opacity-10">Zéro Bullshit</span>
-            <h1 class="text-4xl md:text-9xl font-black mb-8 md:mb-10 text-neon leading-brutal">
-                Bien choisir son <br>
-                <span class="text-neon-cyan">Serveur HA</span>
-            </h1>
-            <p class="text-gray-400 text-lg md:text-2xl max-w-4xl mx-auto mb-12 md:text-16 font-medium leading-relaxed">
-                Ton serveur est le cœur du système. Un mauvais choix = bugs et lenteurs. On fait le point proprement sur le matériel indispensable en 2026.
-            </p>
-            <button onclick="showPage('guide')" class="btn-action px-10 py-5 md:px-14 md:py-7 rounded-2xl md:rounded-3xl font-black text-lg md:text-2xl uppercase tracking-widest">
-                Démarrer le guide
-            </button>
-        </section>
+  <div class="divider"></div>
 
-        <section id="guide" class="page hidden max-w-7xl mx-auto px-6 md:px-8 py-10 md:py-16">
-            <div class="text-center mb-12 md:mb-20">
-                <h2 class="text-3xl md:text-7xl font-black uppercase italic leading-brutal">
-                    Quel matériel <br class="md:hidden"> utiliser pour <br>
-                    <span class="text-neon-cyan text-glow">Home Assistant ?</span>
-                </h2>
-                <div class="h-1.5 w-16 bg-cyan-500 mx-auto mt-6 rounded-full"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-20">
-                <div class="glass p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border-2 border-cyan-500 relative">
-                    <span class="bg-cyan-500 text-black text-[9px] md:text-[11px] font-black px-3 py-1.5 rounded-full uppercase absolute top-6 right-6">MALIN</span>
-                    <i class="mdi mdi-desktop-tower-monitor text-4xl text-cyan-400 mb-6 block"></i>
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2 leading-tight">Mini-PC Occasion</h3>
-                    <p class="text-cyan-400 font-mono text-lg md:text-xl font-black mb-6">80€ à 120€</p>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium text-justify md:text-left">Dell OptiPlex / HP ProDesk. Config cible : i3/i5, 8Go RAM, SSD 120Go. C'est le meilleur rapport puissance/prix actuel.</p>
-                </div>
+  <!-- ABOUT -->
+  <section id="about" style="background:#000000; padding:100px 48px;">
+    <div class="about-inner">
+      <div class="about-img-wrap">
+        <!-- Portrait Benoit -->
+        <img src="images/Benoit.jpg" alt="Portrait de Benoit" class="about-img" />
+        <div class="about-badge-exp">
+          <span class="num">12+</span>
+          <span class="label">Ans d'expérience</span>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-tag">L'Artiste</span>
+        <h2 class="about-h2">Passion, <em>Précision,</em><br>Perfection</h2>
+        <p class="about-p">Tatoueur professionnel basé à Gien, je transforme vos idées en œuvres d'art permanentes. Spécialisé en réalisme, blackwork et style japonais, chaque projet est une collaboration unique entre votre vision et mon expertise.</p>
+        <p class="about-p">Mon studio offre un environnement stérile et accueillant, où l'hygiène et le confort sont prioritaires. Chaque tatouage est réalisé avec des encres premium et du matériel à usage unique.</p>
+        <div class="about-stats">
+          <div class="stat"><div class="num">2000+</div><div class="label">Réalisations</div></div>
+          <div class="stat"><div class="num">100%</div><div class="label">Hygiène</div></div>
+          <div class="stat"><div class="num">5★</div><div class="label">Avis clients</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                <div class="glass p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem]">
-                    <i class="mdi mdi-leaf text-4xl text-green-400 mb-6 block"></i>
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2">HA Green</h3>
-                    <p class="text-green-400 font-mono text-lg md:text-xl font-black mb-6">~100€</p>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium text-justify md:text-left">Zéro prise de tête. Tu branches, ça marche. Solution officielle, stable, mais limitée pour la vidéo.</p>
-                </div>
+  <div class="divider"></div>
 
-                <div class="glass p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem]">
-                    <i class="mdi mdi-integrated-circuit text-4xl text-amber-400 mb-6 block"></i>
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2">HA Yellow</h3>
-                    <p class="text-amber-400 font-mono text-lg md:text-xl font-black mb-6">150€+</p>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium text-justify md:text-left">Zigbee et Matter intégrés, slot SSD NVMe. C'est le serveur tout-en-un propre et officiel.</p>
-                </div>
+  <!-- STYLES / SPÉCIALITÉS -->
+  <section id="styles" style="background:#000000; padding:100px 48px;">
+    <div style="max-width:1280px; margin:0 auto; text-align:center;">
+      <span class="section-tag">Spécialités</span>
+      <h2 class="section-title">Mes <em>Styles</em></h2>
+      <div class="styles-grid">
+        <div class="style-card" onclick="this.classList.toggle('active')">
+          <div class="style-card-bg" style="background-image: url('images/01.jpg');"></div>
+          <div class="style-card-overlay"></div>
+          <div class="style-card-content">
+            <span class="style-icon">✦</span>
+            <div class="style-name">Réalisme</div>
+            <div class="style-desc">Portraits et scènes photoréalistes d'une précision saisissante.</div>
+          </div>
+        </div>
+        <div class="style-card" onclick="this.classList.toggle('active')">
+          <div class="style-card-bg" style="background-image: url('images/05.jpg');"></div>
+          <div class="style-card-overlay"></div>
+          <div class="style-card-content">
+            <span class="style-icon">⬡</span>
+            <div class="style-name">Blackwork</div>
+            <div class="style-desc">Géométrie audacieuse et motifs tribaux en encre noire pure.</div>
+          </div>
+        </div>
+        <div class="style-card" onclick="this.classList.toggle('active')">
+          <div class="style-card-bg" style="background-image: url('images/03.jpg');"></div>
+          <div class="style-card-overlay"></div>
+          <div class="style-card-content">
+            <span class="style-icon">🎨</span>
+            <div class="style-name">Japonais</div>
+            <div class="style-desc">Dragons, koi et cerisiers dans la tradition irezumi.</div>
+          </div>
+        </div>
+        <div class="style-card" onclick="this.classList.toggle('active')">
+          <div class="style-card-bg" style="background-image: url('images/04.jpg');"></div>
+          <div class="style-card-overlay"></div>
+          <div class="style-card-content">
+            <span class="style-icon">☆</span>
+            <div class="style-name">Fineline</div>
+            <div class="style-desc">Traits fins et délicats pour un résultat éthéré et raffiné.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                <div class="glass p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem]">
-                    <i class="mdi mdi-raspberry-pi text-4xl text-red-500 mb-6 block"></i>
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2">Raspberry Pi 4 / 5</h3>
-                    <p class="text-red-500 font-mono text-lg md:text-xl font-black mb-6">130€ à 150€</p>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium text-justify md:text-left">Le classique compact. Attention, le prix du kit complet dépasse souvent celui d'un Mini-PC.</p>
-                </div>
+  <div class="divider"></div>
 
-                <div class="glass p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem]">
-                    <i class="mdi mdi-router-wireless text-4xl text-purple-400 mb-6 block"></i>
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2">Freebox Delta/Ultra</h3>
-                    <p class="text-purple-400 font-mono text-lg md:text-xl font-black mb-6">0€ (Inclus)</p>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium text-justify md:text-left">Utilise les VM de ta box. Parfait pour un premier test gratuit avant d'investir.</p>
-                </div>
+  <!-- PORTFOLIO -->
+  <section id="portfolio" style="background:#000000; padding:100px 48px; text-align:center;">
+    <span class="section-tag">Portfolio</span>
+    <h2 class="section-title">Galerie <em>d'Œuvres</em></h2>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <img src="images/06.jpg" alt="Portfolio 1" class="portfolio-img" style="min-height:500px;" />
+      </div>
+      <div class="portfolio-item">
+        <img src="images/07.jpg" alt="Portfolio 2" class="portfolio-img" />
+      </div>
+      <div class="portfolio-item">
+        <img src="images/08.jpg" alt="Portfolio 3" class="portfolio-img" />
+      </div>
+      <div class="portfolio-item">
+        <img src="images/09.jpg" alt="Portfolio 4" class="portfolio-img" />
+      </div>
+      <div class="portfolio-item">
+        <img src="images/10.jpg" alt="Portfolio 5" class="portfolio-img" />
+      </div>
+    </div>
 
-                <div class="glass p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border-l-4 border-cyan-400">
-                    <i class="mdi mdi-antenna text-4xl text-cyan-400 mb-6 block"></i>
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-2">Le Choix Zigbee</h3>
-                    <p class="text-cyan-400 font-mono text-lg md:text-xl font-black mb-6">30€ - 35€</p>
-                    <p class="text-sm text-gray-400 leading-relaxed font-medium text-justify md:text-left">Indispensable. Prends un Sonoff Dongle-E ou un SkyConnect pour tes capteurs.</p>
-                </div>
-            </div>
+  </section>
 
-            <div class="bg-red-600 bg-opacity-10 border-2 border-red-600 border-opacity-30 p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] text-center mb-16">
-                <p class="text-xl md:text-3xl font-black text-white uppercase italic">⚠️ Pas de carte SD pour le long terme !</p>
-            </div>
-        </section>
+  <div class="divider"></div>
 
-        <section id="hacs" class="page hidden max-w-5xl mx-auto px-6 md:px-8 py-12 md:py-20">
-            <h2 class="text-3xl md:text-5xl font-black uppercase italic mb-12 md:mb-16 text-center">Installer <span class="text-purple-500">HACS</span> proprement</h2>
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" style="background:var(--dark); padding:100px 48px; text-align:center;">
+    <div style="max-width:900px; margin:0 auto;">
+      <span class="section-tag">Témoignages</span>
+      <h2 class="section-title">Ce Qu'ils <em>Disent</em></h2>
+      <div class="testimonials-slider" id="slider">
+        <div class="quote-icon">"</div>
+        <div class="stars" id="stars">★★★★★</div>
+        <p class="testimonial-text" id="testi-text">"Un Excellent tatoueur qui prend vraiment le temps d’écouter le client sur ses idées , un travail minutieux dans la préparation du tattoo et dans le tatouage en lui même. Je conseille à 100% belly ink , l’ambiance et vraiment agréable et à la cool .. merci à lui pour son professionnalisme et ça joue de vivre"</p>
+        <div class="testimonial-author" id="testi-author">Billi Loomis</div>
+        <div class="slider-dots" id="dots"></div>
+      </div>
+    </div>
+  </section>
 
-            <div class="space-y-8 md:space-y-12">
-                <div class="glass p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border-l-8 border-cyan-500">
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-                        <span class="step-number">0</span> Installation de SSH
-                    </h3>
-                    <div class="space-y-4 text-sm font-medium text-gray-300">
-                        <p>1. Va dans <b>Paramètres</b> > <b>Modules</b>.</p>
-                        <p>2. Cherche <b>"Terminal & SSH"</b> dans la boutique.</p>
-                        <p>3. Installe et clique sur <b>Démarrer</b>.</p>
-                    </div>
-                </div>
+  <div class="divider"></div>
 
-                <div class="glass p-8 md:p-10 rounded-[2rem] md:rounded-[3rem]">
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-                        <span class="step-number">1</span> La Commande
-                    </h3>
-                    <div class="code-block text-[10px] md:text-sm">wget -O - https://get.hacs.xyz | bash -</div>
-                </div>
+  <!-- INSTAGRAM -->
+  <section id="instagram" style="background:var(--dark2); padding:100px 48px; text-align:center;">
+    <div style="max-width:1280px; margin:0 auto;">
+      <span class="section-tag">Suivez-moi</span>
+      <div class="insta-handle"><a href="https://www.instagram.com/belly.ink/" target="_blank" rel="noopener noreferrer"><span>@belly.ink</span></a> sur Instagram</div>
+      <div class="insta-grid">
+        <div class="insta-item"><img src="images/01.jpg" alt="Tatouage Instagram 1" class="insta-img" /></div>
+        <div class="insta-item"><img src="images/05.jpg" alt="Tatouage Instagram 2" class="insta-img" /></div>
+        <div class="insta-item"><img src="images/03.jpg" alt="Tatouage Instagram 3" class="insta-img" /></div>
+        <div class="insta-item"><img src="images/04.jpg" alt="Tatouage Instagram 4" class="insta-img" /></div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
 
-                <div class="glass p-8 md:p-10 rounded-[2rem] md:rounded-[3rem]">
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-                        <span class="step-number">2</span> Le Reboot
-                    </h3>
-                    <p class="text-sm text-gray-400 font-medium">Redémarrage complet : <b>Paramètres</b> > <b>Système</b> > <b>Redémarrer</b>.</p>
-                </div>
+  <!-- ENGAGEMENTS -->
+  <section id="engagements" style="background:#000000; padding:80px 48px;">
+    <div style="max-width:800px; margin:0 auto; text-align:center;">
+      <span class="section-tag" style="display:block;">Garanties</span>
+      <h2 class="section-title">Mes <em>Engagements</em></h2>
+      
+      <ul style="list-style:none; padding:0; margin:40px 0 0 0; text-align:left; display:flex; flex-direction:column; gap:20px; background:var(--dark3); border-radius:24px; padding:40px; border:1px solid rgba(201,168,76,0.1);">
+        <li style="display:flex; align-items:flex-start; gap:16px;">
+          <span style="color:var(--gold); font-size:1.2rem; line-height:1.2;">✧</span>
+          <span style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.5;">Dessins envoyés quelques jours avant le rendez-vous</span>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:16px;">
+          <span style="color:var(--gold); font-size:1.2rem; line-height:1.2;">✧</span>
+          <span style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.5;">Deux à trois modifications possibles</span>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:16px;">
+          <span style="color:var(--gold); font-size:1.2rem; line-height:1.2;">✧</span>
+          <span style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.5;">Travail soigné et personnalisé</span>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:16px;">
+          <span style="color:var(--gold); font-size:1.2rem; line-height:1.2;">✧</span>
+          <span style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.5;">Matériel stérile et règles d’hygiène strictes</span>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:16px;">
+          <span style="color:var(--gold); font-size:1.2rem; line-height:1.2;">✧</span>
+          <span style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.5;">Accompagnement pour créer votre projet unique</span>
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:16px;">
+          <span style="color:var(--gold); font-size:1.2rem; line-height:1.2;">✧</span>
+          <span style="color:rgba(255,255,255,0.85); font-size:1.05rem; line-height:1.5;">Certification professionnelle obtenue auprès de la célèbre tatoueuse <strong>Sampaguitajay</strong>, reconnue pour l’excellence de son enseignement.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-                <div class="glass p-8 md:p-10 rounded-[2rem] md:rounded-[3rem]">
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-                        <span class="step-number">3</span> Activer HACS
-                    </h3>
-                    <p class="text-sm text-gray-400 font-medium italic">Paramètres > Appareils et services > Ajouter une intégration > HACS.</p>
-                </div>
+  <!-- CTA -->
+  <section id="cta" style="background:var(--dark); padding:80px 48px;">
+    <div class="cta-box">
+      <h2 class="cta-title">Prêt à Créer <em>Votre Œuvre&nbsp;?</em></h2>
+      <p class="cta-sub">Chaque projet commence par une conversation. Partagez votre idée, et ensemble, donnons-lui vie.</p>
+      <button class="btn-cta" onclick="openModal()">
+        Prendre Rendez-vous
+        <svg viewBox="0 0 20 20"><path d="M4 10h12M12 6l4 4-4 4"/></svg>
+      </button>
+    </div>
+  </section>
 
-                <div class="glass p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] border-b-8 border-purple-500">
-                    <h3 class="text-xl md:text-2xl font-black uppercase mb-6 flex items-center gap-3">
-                        <span class="step-number">4</span> GitHub
-                    </h3>
-                    <p class="text-sm text-gray-400 font-medium">Liaison GitHub avec le code à 8 chiffres.</p>
-                </div>
-            </div>
-        </section>
+  <!-- FAQ -->
+  <section id="faq" style="background:var(--dark2); padding:80px 48px;">
+    <div style="max-width:760px; margin:0 auto;">
+      <span class="section-tag" style="text-align:center; display:block;">FAQ</span>
+      <h2 class="section-title" style="text-align:center;">Questions <em>Fréquentes</em></h2>
+      <div id="faq-list"></div>
+    </div>
+  </section>
 
-        <section id="community-section" class="glass mx-6 md:mx-10 p-10 md:p-16 rounded-[2.5rem] md:rounded-[4rem] border border-white border-opacity-5 mb-24 text-center">
-            <div class="text-center mb-12 md:mb-16">
-                <span class="text-gray-700 text-[9px] md:text-[10px] font-black uppercase tracking-[0.5em] mb-4 block">Zéro Solitude</span>
-                <h3 class="text-3xl md:text-5xl font-black uppercase italic tracking-tight mb-4">La <span class="text-neon-cyan text-glow">communauté</span></h3>
-                <p class="text-gray-500 text-sm md:text-base max-w-2xl mx-auto font-medium">TechEnClair c'est aussi de l'aide en direct et du partage.</p>
-            </div>
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:16px;">
+          <div class="logo-icon" style="width:32px;height:32px;font-size:0.85rem;">B</div>
+          <span>BELLY</span><strong>INK</strong>
+        </div>
+        <p>Studio de tatouage premium. L'art au service de votre peau. Chaque œuvre est unique, chaque trait raconte une histoire.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/belly.ink/" target="_blank" rel="noopener noreferrer" title="Instagram">📸</a>
+          <a href="mailto:benoit.despriee@hotmail.com" title="Email">✉</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#hero">Accueil</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="contact-item"><span>📸</span><span><a href="https://www.instagram.com/belly.ink/" target="_blank" style="color:inherit;text-decoration:none;">Instagram : @belly.ink</a></span></div>
+        <div class="contact-item"><span>📘</span><span>Facebook : Belly Ink</span></div>
+        <div class="contact-item"><span>📞</span><span>07 43 63 29 02</span></div>
+        <div class="contact-item"><span>📍</span><span>6 D940, 45500 Gien<br><small>(près de MGAA)</small></span></div>
+      </div>
+      <div class="footer-col">
+        <h4>Horaires</h4>
+        <div class="hours-row"><span>Lun – Ven</span><strong>10h – 19h</strong></div>
+        <div class="hours-row"><span>Samedi</span><strong>11h – 18h</strong></div>
+        <div class="hours-row"><span>Dimanche</span><span class="closed">Fermé</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Belly Ink. Tous droits réservés.</p>
+      <div class="footer-links">
+        <a href="#">Mentions légales</a>
+        <a href="#">Politique de confidentialité</a>
+        <a href="#">CGV</a>
+      </div>
+    </div>
+  </footer>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
-                <a href="https://www.tiktok.com/@techenclair" target="_blank" class="glass btn-social btn-tiktok flex flex-col items-start gap-3 p-6 md:p-8 rounded-3xl border border-white border-opacity-5">
-                    <div class="flex items-center gap-4 mb-3 border-b border-white/5 pb-4 w-full">
-                        <i class="mdi mdi-tiktok text-3xl md:text-4xl text-white"></i>
-                        <div class="text-left">
-                            <span class="font-black uppercase tracking-widest text-base md:text-lg text-white">Tuto Minute</span>
-                            <span class="text-[9px] md:text-xs text-red-500 font-bold uppercase block mt-1">Tiktok</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-xs md:text-sm font-medium leading-relaxed text-left">Les erreurs à éviter en domotique.</p>
-                </a>
-                
-                <a href="https://discord.gg/TGpxArpNcE" target="_blank" class="glass btn-social btn-discord flex flex-col items-start gap-3 p-6 md:p-8 rounded-3xl border border-white border-opacity-5">
-                    <div class="flex items-center gap-4 mb-3 border-b border-white/5 pb-4 w-full">
-                        <i class="mdi mdi-discord text-3xl md:text-4xl text-white"></i>
-                        <div class="text-left">
-                            <span class="font-black uppercase tracking-widest text-base md:text-lg text-white">L'Aide Directe</span>
-                            <span class="text-[9px] md:text-xs text-[#5865F2] font-bold uppercase block mt-1">Discord</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-xs md:text-sm font-medium leading-relaxed text-left">Pose tes questions au groupe.</p>
-                </a>
+  <!-- MODAL RENDEZ-VOUS -->
+  <div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h2>Prendre <em>Rendez-vous</em></h2>
+      <p>Remplissez le formulaire et je vous recontacte dans les 24h.</p>
+      <div class="form-group">
+        <label>Prénom & Nom</label>
+        <input type="text" placeholder="Jean Dupont" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="jean@exemple.fr" />
+      </div>
+      <div class="form-group">
+        <label>Style souhaité</label>
+        <select>
+          <option>Réalisme</option>
+          <option>Blackwork</option>
+          <option>Japonais</option>
+          <option>Fineline</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description du projet</label>
+        <textarea placeholder="Décrivez votre idée..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitForm()">Envoyer ma demande</button>
+    </div>
+  </div>
 
-                <a href="https://github.com/mirasandalucia/TechEnClair" target="_blank" class="glass btn-social btn-github flex flex-col items-start gap-3 p-6 md:p-8 rounded-3xl border border-white border-opacity-5">
-                    <div class="flex items-center gap-4 mb-3 border-b border-white/5 pb-4 w-full">
-                        <i class="mdi mdi-github text-3xl md:text-4xl text-white"></i>
-                        <div class="text-left">
-                            <span class="font-black uppercase tracking-widest text-base md:text-lg text-white">Fichiers YAML</span>
-                            <span class="text-[9px] md:text-xs text-gray-400 font-bold uppercase block mt-1">Github</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-xs md:text-sm font-medium leading-relaxed text-left">Retrouve les codes partagés.</p>
-                </a>
+  <script>
+    /* ── NAVBAR scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
 
-                <a href="https://x.com/IronVlog45" target="_blank" class="glass btn-social btn-x flex flex-col items-start gap-3 p-6 md:p-8 rounded-3xl border border-white border-opacity-5">
-                    <div class="flex items-center gap-4 mb-3 border-b border-white/5 pb-4 w-full">
-                        <i class="mdi mdi-twitter text-3xl md:text-4xl text-white"></i>
-                        <div class="text-left">
-                            <span class="font-black uppercase tracking-widest text-base md:text-lg text-white">News Direct</span>
-                            <span class="text-[9px] md:text-xs text-cyan-400 font-bold uppercase block mt-1">X / Twitter</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-xs md:text-sm font-medium leading-relaxed text-left">Suis les coulisses du projet.</p>
-                </a>
-            </div>
-        </section>
+    /* ── TESTIMONIALS slider ── */
+    const testimonials = [
+      { stars: '★★★★★', text: '"Un Excellent tatoueur qui prend vraiment le temps d’écouter le client sur ses idées , un travail minutieux dans la préparation du tattoo et dans le tatouage en lui même. Je conseille à 100% belly ink , l’ambiance et vraiment agréable et à la cool .. merci à lui pour son professionnalisme et ça joue de vivre"', author: 'Billi Loomis' },
+      { stars: '★★★★★', text: '"J’ai fait mon tatouage ici et je suis plus que satisfait L’artiste a vraiment pris le temps d’écouter mes idées et de les transformer en un dessin unique, parfaitement adapté à ce que je voulais. L’ambiance du salon est chaleureuse, propre, et professionnelle. Le travail est précis, soigné, et les détails sont incroyables. Je recommande à 100% — une vraie passion et un talent exceptionnel ! 🙏"', author: 'Shirin Haco' },
+      { stars: '★★★★★', text: '"Super travail ! très professionnel, agréable socialement, à l’écoute de son client. 8h de tatouage qui sont passées vite. Je le recommande à tous."', author: 'Alexis Guillin' },
+      { stars: '★★★★★', text: '"Un tatoueur exceptionnel ! Tout c’est super bien passé du début à la fin. Je suis tellement heureuse d’avoir été tatouée par lui. Dès le début, il met super à l’aise il est vraiment à l’écoute, comprend ce qu’on veut et apporte cette petite touche qui rend le projet encore plus beau. On sent qu’il aime ce qu’il fait, qu’il y met du cœur et de la passion. Le résultat est juste magnifique, exactement comme je l’espérais... C’est rare de tomber sur quelqu’un d’aussi passionné et bienveillant. Je reviendrai sans hésiter !🥰"', author: 'handzisch' },
+      { stars: '★★★★★', text: '"Tatoueur très pro, à l’écoute et talentueux. Résultat parfait. Je recommande"', author: 'Lea Dm' },
+    ];
 
-        <section id="dashboard" class="page hidden max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20 text-center">
-            <h2 class="text-3xl md:text-4xl font-black uppercase mb-12 md:mb-16 italic text-neon-cyan">Aperçu Live</h2>
-            
-            <div class="glass p-4 md:p-6 rounded-[2rem] md:rounded-[3rem] border border-cyan-500/30 group">
-                <div class="relative w-full h-[300px] md:h-[600px] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden">
-                    <img src="Dash.png" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700" alt="Dashboard HA">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#040707] via-transparent to-transparent opacity-80"></div>
-                    <div class="absolute top-4 right-4 md:top-6 md:right-6 px-3 md:px-4 py-1.5 md:py-2 bg-red-600/20 border border-red-600/50 rounded-full flex items-center gap-2">
-                        <div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-                        <span class="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-red-500">Vue Sécurisée</span>
-                    </div>
-                </div>
-            </div>
-            
-            <p class="mt-8 text-gray-500 text-[10px] md:text-sm font-medium italic px-4">
-                <i class="mdi mdi-shield-check mr-2"></i> Mode "Aperçu Sécurisé" activé pour protéger ton serveur.
-            </p>
-        </section>
+    let currentSlide = 0;
+    const dotsEl = document.getElementById('dots');
+    const textEl = document.getElementById('testi-text');
+    const authorEl = document.getElementById('testi-author');
+    const starsEl = document.getElementById('stars');
 
-    </main>
+    function renderDots() {
+      dotsEl.innerHTML = '';
+      testimonials.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === currentSlide ? ' active' : '');
+        d.onclick = () => goTo(i);
+        dotsEl.appendChild(d);
+      });
+    }
 
-    <footer class="py-10 md:py-16 text-center border-t border-white border-opacity-5">
-        <div class="text-gray-700 text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em]">&copy; 2026 TechEnClair — Zéro Bullshit</div>
-    </footer>
+    function goTo(i) {
+      currentSlide = i;
+      const t = testimonials[i];
+      textEl.style.opacity = '0';
+      setTimeout(() => {
+        textEl.textContent = t.text;
+        authorEl.textContent = t.author;
+        starsEl.textContent = t.stars;
+        textEl.style.opacity = '1';
+      }, 200);
+      renderDots();
+    }
+    textEl.style.transition = 'opacity 0.3s';
+    renderDots();
+    setInterval(() => goTo((currentSlide + 1) % testimonials.length), 5000);
 
-    <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => {
-                p.classList.remove('active-page');
-                p.classList.add('hidden');
-            });
-            const target = document.getElementById(pageId);
-            target.classList.remove('hidden');
-            target.classList.add('active-page');
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-    </script>
+    /* ── FAQ accordion ── */
+    const faqs = [
+      { q: 'Combien coûte un tatouage ?', a: 'Le tarif dépend de la taille, de la complexité et du temps de réalisation. Minimum de séance : 150€. Contactez-moi pour un devis personnalisé.' },
+      { q: 'Comment préparer ma séance ?', a: 'Venez hydraté, reposé, et avec un repas dans le ventre. Évitez l\'alcool 24h avant. Portez des vêtements permettant d\'accéder facilement à la zone à tatouer.' },
+      { q: 'Combien de temps dure la cicatrisation ?', a: 'La cicatrisation superficielle prend environ 2 à 3 semaines. La cicatrisation complète peut prendre 2 à 3 mois. Des soins précis vous seront fournis.' },
+      { q: 'Puis-je apporter mon propre design ?', a: 'Absolument ! Je travaille à partir de vos idées, photos de référence ou croquis. Nous affinons ensemble le design avant la séance.' },
+      { q: 'Le studio est-il bien stérilisé ?', a: 'Oui, l\'hygiène est ma priorité absolue. Tout le matériel en contact avec la peau est à usage unique. Le studio répond aux normes sanitaires les plus strictes.' },
+    ];
+
+    const faqList = document.getElementById('faq-list');
+    faqs.forEach((f, i) => {
+      const item = document.createElement('div');
+      item.style.cssText = 'border-bottom:1px solid rgba(255,255,255,0.07);';
+      item.innerHTML = `
+        <button onclick="toggleFaq(${i},this)" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:20px 0;background:none;border:none;color:var(--white);font-family:var(--font-body);font-size:0.95rem;font-weight:500;cursor:pointer;text-align:left;gap:16px;">
+          ${f.q}
+          <span class="faq-icon" style="color:var(--gold);font-size:1.2rem;flex-shrink:0;transition:transform 0.3s;">+</span>
+        </button>
+        <div class="faq-answer" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;">
+          <p style="color:rgba(255,255,255,0.55);font-size:0.85rem;line-height:1.7;padding-bottom:20px;">${f.a}</p>
+        </div>
+      `;
+      faqList.appendChild(item);
+    });
+
+    function toggleFaq(i, btn) {
+      const answers = document.querySelectorAll('.faq-answer');
+      const icons = document.querySelectorAll('.faq-icon');
+      const isOpen = answers[i].style.maxHeight !== '0px' && answers[i].style.maxHeight !== '';
+      answers.forEach((a, j) => { a.style.maxHeight = '0px'; icons[j].textContent = '+'; icons[j].style.transform = ''; });
+      if (!isOpen) {
+        answers[i].style.maxHeight = '200px';
+        icons[i].textContent = '−';
+        icons[i].style.transform = 'rotate(180deg)';
+      }
+    }
+
+    /* ── MODAL ── */
+    function openModal() {
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function closeModalOutside(e) {
+      if (e.target === document.getElementById('modal')) closeModal();
+    }
+    function submitForm() {
+      alert('Merci pour votre demande ! Je vous recontacte dans les 24h. 🖤');
+      closeModal();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
 </body>
 </html>
